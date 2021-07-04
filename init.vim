@@ -7,14 +7,19 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'neoclide/coc.nvim', {'branch': 'release'}
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
+Plugin 'nvim-lua/popup.nvim'
+Plugin 'nvim-lua/plenary.nvim'
+Plugin 'nvim-telescope/telescope.nvim'
+Plugin 'nvim-telescope/telescope-fzy-native.nvim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'preservim/nerdtree'
-Plugin 'vim-scripts/AutoComplPop'
 Plugin 'w0rp/ale'
-
+Plugin 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plugin 'dbeniamine/cheat.sh-vim'
+" LSP CONFIG
+Plugin 'neovim/nvim-lspconfig'
+Plugin 'kabouzeid/nvim-lspinstall'
 " ColorSchemes Plugins
 Plugin 'joshdick/onedark.vim'
 Plugin 'morhetz/gruvbox'
@@ -47,8 +52,6 @@ set noerrorbells
 set scrolloff=40
 set signcolumn=yes
 set colorcolumn=80
-set complete+=kspell
-set completeopt=menuone,longest
 set nobackup " We have vcs, we don't need backups.
 set nowritebackup " We have vcs, we don't need backups.
 set noswapfile " They're just annoying. Who likes them?
@@ -78,6 +81,36 @@ let g:ale_sign_column_always = 1
 " Disable ALE auto highlights
 let g:ale_set_highlights = 0
 
+"Functions
+fun! GotoBuffer(ctrlId)
+  if (a:ctrlId > 9) || (a:ctrlId < 0)
+    echo "CtrlID must be between 0-9"
+    return
+  end
+
+  let contents = g:win_ctrl_buf_list[a:ctrlId]
+  if type(l:contents) != v:t_list
+    echo "Nothing here"
+    return
+  end
+
+  let bufh = l:contents[1]
+  call nvim_win_set_buf(0,l:bufh)
+endfun
+
+let g:win_ctrl_buf_list = [0,0,0,0]
+fun! SetBuffer(ctrlId)
+  if has_key(b:, "terminal_job_id") == 0
+    echo "You must be in a terminal to execute this command."
+    return
+  end
+  if (a:ctrlId > 9) || (a:ctrlId < 0)
+    echo "CtrlID must be between 0-9"
+    return
+  end
+  let g:win_ctrl_buf_list[a:ctrlId] = [b:terminal_job_id, nvim_win_get_buf(0)]
+endfun
+
 "Key-bindings
 let mapleader = " "
 
@@ -91,17 +124,14 @@ nnoremap ; :
 nmap <leader> gd <Plug>(coc-definition)
 nmap <leader> gy <Plug>(coc-type-definition)
 nmap <leader> gi <Plug>(coc-implementation)
-nmap <leader> gr <Plug>(coc-references)
-nnoremap <C-p> :GFiles<CR>
 nnoremap <C-b> :NERDTreeToggle<CR>
-nnoremap / /\v
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 nnoremap <leader><leader> <c-^>
 noremap j gj
 noremap k gk
 nnoremap <leader>c <Plug>CommentaryLine
 nnoremap <C-s> :source ~/.config/nvim/init.vim<CR>
-
+nnoremap q <c-v>
 noremap <Up>    <Nop>
 noremap <Down>  <Nop>
 noremap <Left>  <Nop>
@@ -120,4 +150,47 @@ colorscheme gruvbox
 :set bg=dark
 let g:airline_theme='badwolf'
 
+" Transparent bg
+:hi Normal guibg=NONE ctermbg=NONE
 
+" Telescope Bindings
+
+nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
+nnoremap <C-p> :lua require('telescope.builtin').git_files()<CR>
+nnoremap <Leader>pf :lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
+nnoremap <leader>pb :lua require('telescope.builtin').buffers()<CR>
+nnoremap <leader>vh :lua require('telescope.builtin').help_tags()<CR>
+nnoremap <leader>gw :lua require('telescope').extensions.git_worktree.git_worktrees()<CR>
+nnoremap <leader>gm :lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>
+
+" Nvim Terminal
+nmap <leader>tn :terminal<CR>
+nmap <leader>tu :call GotoBuffer(0)<CR>
+nmap <leader>tsu :call SetBuffer(0)<CR>
+"FireNvim
+let g:firenvim_config = {
+    \ 'globalSettings': {
+        \ 'alt': 'all',
+    \  },
+    \ 'localSettings': {
+        \ '.*': {
+            \ 'cmdline': 'neovim',
+            \ 'content': 'text',
+            \ 'priority': 0,
+            \ 'selector': 'textarea:not([readonly]), div[role="textbox"]',
+            \ 'takeover': 'never',
+        \ },
+    \ }
+\ }
+au BufEnter github.com_*.txt set filetype=markdown
+
+" Fugitive
+nmap <leader>gs :G<CR>
+nmap <leader>g2 :diffget //3<CR>
+nmap <leader>g1 :diffget // <CR>
+nmap <leader>g3 :Git -c push.default=current push<CR>
+" LSP
+lua require('lspconfig').solargraph.setup{}
+lua require('lspconfig').pyright.setup{}
+lua require("lspconfig").tsserver.setup{}

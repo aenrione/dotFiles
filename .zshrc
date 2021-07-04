@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/aenrione/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -78,17 +78,18 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
-
-  alias ls="colorls"
-  alias lc='colorls -lA --sd'
-  #alias la="colorls -al"
+export EDITOR='nvim'
+alias ls="colorls"
+alias lc='colorls -lA --sd'
+#alias la="colorls -al"
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 alias ovim='\vim'
 alias vrc='nvim ~/.config/nvim/init.vim'
 alias zrc='nvim ~/.zshrc'
-
+alias tws='tmuxinator start tws'
+#bindkey '^ ' autosuggest-accept
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
