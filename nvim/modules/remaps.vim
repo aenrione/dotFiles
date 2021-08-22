@@ -47,9 +47,9 @@ nnoremap <leader>gm :lua require('telescope').extensions.git_worktree.create_git
 
 " Fugitive
 nmap <leader>gs :G<CR>
-nmap <leader>g2 :diffget //3<CR>
-nmap <leader>g1 :diffget // <CR>
-nmap <leader>g3 :Git -c push.default=current push<CR>
+nmap <leader>gf :diffget //3<CR>
+nmap <leader>gj :diffget // <CR>
+nmap <leader>g1 :Git -c push.default=current push<CR>
 
 " Buffer Control
 nnoremap <silent><leader><tab> <Cmd>bnext<CR>
