@@ -24,6 +24,8 @@ Plugin 'liuchengxu/vim-which-key'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'justinmk/vim-sneak'
 Plugin 'her/synicons.vim'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
 
 " Bufferline
 Plugin 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)

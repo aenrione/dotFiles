@@ -31,13 +31,13 @@ xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
 " Coc
-nmap <leader> gd <Plug>(coc-definition)
+nmap gd <Plug>(coc-definition)
 nmap <leader> gy <Plug>(coc-type-definition)
 nmap <leader> gi <Plug>(coc-implementation)
 
 " Telescope Bindings
 nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
-nnoremap <C-p> :lua require('telescope.builtin').git_files()<CR>
+nnoremap <leader>pp :lua require('telescope.builtin').git_files()<CR>
 nnoremap <Leader>pf :lua require('telescope.builtin').find_files()<CR>
 nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
 nnoremap <leader>pb :lua require('telescope.builtin').buffers()<CR>
@@ -47,6 +47,7 @@ nnoremap <leader>gm :lua require('telescope').extensions.git_worktree.create_git
 
 " Fugitive
 nmap <leader>gs :G<CR>
+nmap <leader>gd :Gdiff<CR>
 nmap <leader>gf :diffget //3<CR>
 nmap <leader>gj :diffget // <CR>
 nmap <leader>g1 :Git -c push.default=current push<CR>
