@@ -5,9 +5,8 @@ call vundle#begin()
 " Tools
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+" Plugin 'neoclide/coc.nvim', {'branch': 'release'}
 Plugin 'nvim-lua/popup.nvim'
 Plugin 'nvim-lua/plenary.nvim'
 Plugin 'nvim-telescope/telescope.nvim'
@@ -26,11 +25,8 @@ Plugin 'justinmk/vim-sneak'
 Plugin 'her/synicons.vim'
 Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
+Plugin 'junegunn/goyo.vim'
 Plugin 'mhinz/vim-startify'
-
-" Bufferline
-Plugin 'kyazdani42/nvim-web-devicons' " Recommended (for coloured icons)
-Plugin 'akinsho/bufferline.nvim'
 
 " LSP CONFIG
 Plugin 'neovim/nvim-lspconfig'
@@ -109,3 +105,9 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " NERDTree
 let NERDTreeShowHidden=1
+
+" Highlight Yank
+augroup highlight_yank
+    autocmd!
+    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
+augroup END

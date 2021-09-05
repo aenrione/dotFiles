@@ -6,7 +6,9 @@ vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual '<Space>'<CR>
 let g:which_key_map =  {}
 " Define a separator
 let g:which_key_sep = '→'
-" set timeoutlen=100
+
+" By default timeoutlen is 1000 ms
+set timeoutlen=500
 
 
 " Not a fan of floating windows for this
@@ -25,14 +27,41 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
 
 " Single mappings
 let g:which_key_map['/'] = [ '<Plug>NERDCommenterToggle'  , 'comment' ]
-let g:which_key_map['e'] = [ ':CocCommand explorer'       , 'explorer' ]
+let g:which_key_map['e'] = [ ':NERDTreeToggle'            , 'explorer' ]
 let g:which_key_map['f'] = [ ':Files'                     , 'search files' ]
 let g:which_key_map['h'] = [ '<C-W>s'                     , 'split below']
-let g:which_key_map['r'] = [ ':Ranger'                    , 'ranger' ]
 let g:which_key_map['S'] = [ ':Startify'                  , 'start screen' ]
 let g:which_key_map['T'] = [ ':Rg'                        , 'search text' ]
 let g:which_key_map['v'] = [ '<C-W>v'                     , 'split right']
-let g:which_key_map['z'] = [ 'Goyo'                       , 'zen' ]
+let g:which_key_map['z'] = [ ':Goyo'                      , 'zen' ]
+let g:which_key_map['<Tab>'] = [ ':bnext'                 , 'next buffer' ]
+let g:which_key_map['<S-Tab>'] = [ ':bprevious'          , 'previous buffer' ]
+
+" a for ale-linters
+let g:which_key_map.a = {
+      \ 'name' : '+ale-linters' ,
+      \ 'n' : [':ALENext'         , 'history'],
+      \ 'p' : [':ALEPrevious'     , 'commands'],
+      \ }
+
+" b for buffers
+let g:which_key_map.b = {
+      \ 'name' : '+buffers' ,
+      \ 'g' : [':buffers<CR>:buffer<Space>'  , 'go to'],
+      \ 'd' : [':buffers<CR>:bdelete<Space>' , 'delete'],
+      \ 'c' : [':Bclose'                     , 'close current'],
+      \ 'f' : ['bfirst'                      , 'first-buffer']    ,
+      \ 'h' : ['Startify'                    , 'home-buffer']     ,
+      \ 'l' : ['blast'                       , 'last-buffer']     ,
+      \ 'n' : ['bnext'                       , 'next-buffer']     ,
+      \ 'p' : ['bprevious'                   , 'previous-buffer'] ,
+      \ '?' : ['Buffers'                     , 'fzf-buffer']      ,
+      \ }
+
+" g for git
+let g:which_key_map.g = {
+      \ 'name' : '+git' ,
+      \ }
 
 " s is for search
 let g:which_key_map.s = {

@@ -3,28 +3,11 @@ nnoremap <silent><leader><tab> <Cmd>bnext<CR>
 nnoremap <silent><leader><s-tab> <Cmd>bprevious<CR>
 
  " Go to Buffer
-nnoremap <silent><leader>1 <Cmd>b1<CR>
-nnoremap <silent><leader>2 <Cmd>b2<CR>
-nnoremap <silent><leader>3 <Cmd>b3<CR>
-nnoremap <silent><leader>4 <Cmd>b4<CR>
-nnoremap <silent><leader>5 <Cmd>b5<CR>
-nnoremap <silent><leader>6 <Cmd>b6<CR>
-nnoremap <silent><leader>7 <Cmd>b7<CR>
-nnoremap <silent><leader>8 <Cmd>b8<CR>
-nnoremap <silent><leader>9 <Cmd>b9<CR>
-nnoremap <silent><leader>gb :buffers<CR>:buffer<Space>
+nnoremap <silent><leader>bg :buffers<CR>:buffer<Space>
 
   " Close Buffers
-nnoremap <c-w>1 <Cmd>Bclose 1<CR>
-nnoremap <c-w>2 <Cmd>Bclose 2<CR>
-nnoremap <c-w>3 <Cmd>Bclose 3<CR>
-nnoremap <c-w>4 <Cmd>Bclose 4<CR>
-nnoremap <c-w>5 <Cmd>Bclose 5<CR>
-nnoremap <c-w>6 <Cmd>Bclose 6<CR>
-nnoremap <c-w>7 <Cmd>Bclose 7<CR>
-nnoremap <c-w>8 <Cmd>Bclose 8<CR>
-nnoremap <c-w>9 <Cmd>Bclose 9<CR>
-noremap <silent><leader>cb :buffers<CR>:buffer<Space>
+noremap <silent><leader>bd :buffers<CR>:bdelete<Space>
+nnoremap <silent> <Leader>bc :Bclose<CR>
 
 " Delete buffer while keeping window layout (don't close buffer's windows).
 " Version 2008-11-18 from http://vim.wikia.com/wiki/VimTip165
@@ -97,4 +80,3 @@ function! s:Bclose(bang, buffer)
   execute wcurrent.'wincmd w'
 endfunction
 command! -bang -complete=buffer -nargs=? Bclose call <SID>Bclose(<q-bang>, <q-args>)
-nnoremap <silent> <Leader>bd :Bclose<CR>

@@ -7,7 +7,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap ; :
 nnoremap <C-b> :NERDTreeToggle<CR>
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 nnoremap <leader><leader> <c-^>
@@ -31,9 +30,9 @@ xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
 " Coc
-nmap gd <Plug>(coc-definition)
-nmap <leader> gy <Plug>(coc-type-definition)
-nmap <leader> gi <Plug>(coc-implementation)
+" nmap gd <Plug>(coc-definition)
+" nmap <leader> gy <Plug>(coc-type-definition)
+" nmap <leader> gi <Plug>(coc-implementation)
 
 " Telescope Bindings
 nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})<CR>
@@ -51,3 +50,15 @@ nmap <leader>gd :Gdiff<CR>
 nmap <leader>gf :diffget //3<CR>
 nmap <leader>gj :diffget // <CR>
 nmap <leader>g1 :Git -c push.default=current push<CR>
+
+" PrimeAgen https://www.youtube.com/watch?v=hSHATqh8svM
+nnoremap Y y$
+
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
+
+inoremap , ,<c-g>u
+inoremap ! !<c-g>u
+inoremap . .<c-g>u
+inoremap ? ?<c-g>u
