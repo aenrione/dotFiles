@@ -7,6 +7,5 @@ source $HOME/.config/nvim/modules/firenvim.vim
 source $HOME/.config/nvim/modules/nvim-terminal.vim
 source $HOME/.config/nvim/modules/vim-which-key.vim
 source $HOME/.config/nvim/modules/startify.vim
-" source $HOME/.config/nvim/modules/bufferline.vim
 
 luafile $HOME/.config/nvim/lua/plugins/compe-config.lua
