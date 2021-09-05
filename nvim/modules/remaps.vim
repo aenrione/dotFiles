@@ -51,16 +51,3 @@ nmap <leader>gd :Gdiff<CR>
 nmap <leader>gf :diffget //3<CR>
 nmap <leader>gj :diffget // <CR>
 nmap <leader>g1 :Git -c push.default=current push<CR>
-
-" Buffer Control
-nnoremap <silent><leader><tab> <Cmd>bnext<CR>
-nnoremap <silent><leader><s-tab> <Cmd>bprevious<CR>
-nnoremap <silent><leader>1 <Cmd>b1<CR>
-nnoremap <silent><leader>2 <Cmd>b2<CR>
-nnoremap <silent><leader>3 <Cmd>b3<CR>
-nnoremap <silent><leader>4 <Cmd>b4<CR>
-nnoremap <silent><leader>5 <Cmd>b5<CR>
-nnoremap <silent><leader>6 <Cmd>b6<CR>
-nnoremap <silent><leader>7 <Cmd>b7<CR>
-nnoremap <silent><leader>8 <Cmd>b8<CR>
-nnoremap <silent><leader>9 <Cmd>b9<CR>

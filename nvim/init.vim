@@ -1,5 +1,6 @@
 source $HOME/.config/nvim/modules/general.vim
 source $HOME/.config/nvim/modules/remaps.vim
+source $HOME/.config/nvim/modules/buffer-control.vim
 source $HOME/.config/nvim/modules/nvim-lsp.vim
 source $HOME/.config/nvim/modules/ale-linters.vim
 source $HOME/.config/nvim/modules/firenvim.vim
