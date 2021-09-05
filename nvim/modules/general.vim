@@ -1,44 +1,45 @@
 "Plugins
 set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
 " Tools
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'VundleVim/Vundle.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Plugin 'neoclide/coc.nvim', {'branch': 'release'}
-Plugin 'nvim-lua/popup.nvim'
-Plugin 'nvim-lua/plenary.nvim'
-Plugin 'nvim-telescope/telescope.nvim'
-Plugin 'nvim-telescope/telescope-fzy-native.nvim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'preservim/nerdtree'
-Plugin 'w0rp/ale'
-Plugin 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-Plugin 'dbeniamine/cheat.sh-vim'
-Plugin 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
-Plugin '907th/vim-auto-save'
-Plugin 'liuchengxu/vim-which-key'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'justinmk/vim-sneak'
-Plugin 'her/synicons.vim'
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/goyo.vim'
-Plugin 'mhinz/vim-startify'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'preservim/nerdtree'
+Plug 'w0rp/ale'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'dbeniamine/cheat.sh-vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug '907th/vim-auto-save'
+Plug 'liuchengxu/vim-which-key'
+Plug 'ryanoasis/vim-devicons'
+Plug 'justinmk/vim-sneak'
+Plug 'her/synicons.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-startify'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'dyng/ctrlsf.vim'
 
 " LSP CONFIG
-Plugin 'neovim/nvim-lspconfig'
-Plugin 'hrsh7th/nvim-compe'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 
 " ColorSchemes Plugins
-Plugin 'joshdick/onedark.vim'
-Plugin 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 
 " Random
-Plugin 'ThePrimeagen/vim-be-good'
-call vundle#end()            " required
+Plug 'ThePrimeagen/vim-be-good'
+call plug#end()
 
 filetype plugin indent on    " required
 set nocompatible              " be iMproved, required
@@ -79,6 +80,15 @@ set hlsearch " highlight matches
 set gdefault " use the `g` flag by default.
 set virtualedit+=block
 
+" Fold Config
+set foldmethod=indent
+set foldlevel=1
+set foldclose=all
+" zo - opens folds
+" zc - closes fold
+" zm - increases auto fold depth
+" zr - reduces auto fold depth
+
 " AutoSave
 let g:auto_save = 1  " enable AutoSave on Vim startup
 
@@ -111,3 +121,6 @@ augroup highlight_yank
     autocmd!
     au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=300}
 augroup END
+
+" CtrlLSF
+let g:ctrlsf_backend = 'ack'
