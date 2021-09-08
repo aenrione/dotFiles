@@ -82,7 +82,7 @@ set virtualedit+=block
 
 " Fold Config
 set foldmethod=indent
-set foldlevel=1
+set foldlevel=99
 set foldclose=all
 " zo - opens folds
 " zc - closes fold

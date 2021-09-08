@@ -58,6 +58,9 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap J mzJ`z
 
+nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
+
 inoremap , ,<c-g>u
 inoremap ! !<c-g>u
 inoremap . .<c-g>u
@@ -72,3 +75,45 @@ nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
 nnoremap <C-F>t :CtrlSFToggle<CR>
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+
+" Beginning and end of line
+imap <C-a> <home>
+imap <C-e> <end>
+cmap <C-a> <home>
+cmap <C-e> <end>
+
+" Control-C Copy in visual mode
+vmap <C-C> y
+
+" Control-V Paste in insert and command mode
+cmap <C-V> <C-r>0
+imap <C-V> <esc>pa
+
+" Window Movement
+nmap <M-h> <C-w>h
+nmap <M-j> <C-w>j
+nmap <M-k> <C-w>k
+nmap <M-l> <C-w>l
+
+" Resizing
+nmap <C-M-H> 2<C-w><
+nmap <C-M-L> 2<C-w>>
+nmap <C-M-K> <C-w>-
+nmap <C-M-J> <C-w>+
+
+" Insert mode movement
+imap <M-h> <left>
+imap <M-j> <down>
+imap <M-k> <up>
+imap <M-l> <right>
+imap <M-f> <C-right>
+imap <M-b> <C-left>
+
+" Alt-m for creating a new line in insert mode
+imap <M-m> <esc>o
+
+" Command mode history
+cmap <M-p> <up>
+cmap <M-n> <down>
+cmap <M-k> <up>
+cmap <M-j> <down>
