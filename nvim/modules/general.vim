@@ -28,25 +28,23 @@ Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-startify'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'dyng/ctrlsf.vim'
+Plug 'vimwiki/vimwiki'
 
 " LSP CONFIG
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 
 " ColorSchemes Plugins
-Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 
-" Random
-Plug 'ThePrimeagen/vim-be-good'
 call plug#end()
 
-filetype plugin indent on    " required
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
 filetype plugin indent on " Filetype auto-detection
 syntax on " Syntax highlighting
+filetype plugin on
 
 set tabstop=2
 set shiftwidth=2

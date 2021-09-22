@@ -1,0 +1,18 @@
+# setxbkmap us -variant $()
+
+# STEPS for COLEMAK DH - Tarmak
+
+Week 1: tarmak1c_e (https://dreymar.colemak.org/res/cmk/tarmak/Tarmak-CA-ANS_Spectral-cpt/Tmk1ANS-C_RBo_E.png)
+
+Week 2: tarmak2c_et (https://dreymar.colemak.org/res/cmk/tarmak/Tarmak-CA-ANS_Spectral-cpt/Tmk2ANS-CA_RBo_T.png)
+
+FINALFORM = us(cmk_ed_dh)
+
+References:
+    us(tarmak1__e) – "English (Tarmak1 - Colemak[eD] transitional)"
+    us(tarmak2__et) – "English (Tarmak2 - Colemak[eD] transitional)"
+    us(tarmak3__etr) – "English (Tarmak3 - Colemak[eD] transitional)"
+    us(tarmak4__etro) – "English (Tarmak4 - Colemak[eD] transitional)"
+• Also, there are some special Tarmak steps for learning Colemak with CurlAngle mods:
+    us(tarmak1c_e) – "English (Tarmak1h - Colemak[eD] transitional w/ Curl-H mod)"
+    us(tarmak2c_et) – "English (Tarmak2dh - Colemak[eD] transitional w/ Curl-DH mod)"
