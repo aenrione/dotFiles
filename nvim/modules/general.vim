@@ -21,7 +21,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 Plug '907th/vim-auto-save'
 Plug 'liuchengxu/vim-which-key'
 Plug 'ryanoasis/vim-devicons'
-Plug 'justinmk/vim-sneak'
 Plug 'her/synicons.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -29,6 +28,11 @@ Plug 'mhinz/vim-startify'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'dyng/ctrlsf.vim'
 Plug 'vimwiki/vimwiki'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'ap/vim-css-color'
+
 
 " LSP CONFIG
 Plug 'neovim/nvim-lspconfig'

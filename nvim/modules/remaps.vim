@@ -12,9 +12,7 @@ noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 nnoremap <leader><leader> <c-^>
 noremap j gj
 noremap k gk
-nnoremap <leader>c <Plug>CommentaryLine
 nnoremap <C-s> :source ~/.config/nvim/init.vim<CR>
-nnoremap q <c-v>
 noremap <Up>    <Nop>
 noremap <Down>  <Nop>
 noremap <Left>  <Nop>
@@ -117,3 +115,7 @@ cmap <M-p> <up>
 cmap <M-n> <down>
 cmap <M-k> <up>
 cmap <M-j> <down>
+
+" Vim-Commentary
+nnoremap <space>/ :Commentary<CR>
+vnoremap <space>/ :Commentary<CR>
