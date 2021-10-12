@@ -1,6 +1,6 @@
 " Buffer Control
-nnoremap <silent><leader><tab> <Cmd>bnext<CR>
-nnoremap <silent><leader><s-tab> <Cmd>bprevious<CR>
+nnoremap <silent><tab> <Cmd>bnext<CR>
+nnoremap <silent><s-tab> <Cmd>bprevious<CR>
 
  " Go to Buffer
 nnoremap <silent><leader>bg :buffers<CR>:buffer<Space>

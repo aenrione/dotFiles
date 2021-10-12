@@ -17,7 +17,7 @@ Plug 'preservim/nerdtree'
 Plug 'w0rp/ale'
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'dbeniamine/cheat.sh-vim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug '907th/vim-auto-save'
 Plug 'liuchengxu/vim-which-key'
 Plug 'ryanoasis/vim-devicons'
@@ -32,6 +32,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-css-color'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'takac/vim-hardtime'
 
 
 " LSP CONFIG
@@ -53,33 +55,25 @@ filetype plugin on
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
-set expandtab " use spaces instead of tabs.
-set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
-set shiftround " tab / shifting moves to closest tabstop.
-set autoindent " Match indents on new lines.
-set smartindent " Intellegently dedent / indent new lines based on rules.
+set expandtab
+set smarttab
+set shiftround
+set autoindent
+set smartindent
 set relativenumber
-set exrc
-set guicursor=
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+\,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+\,sm:block-blinkwait175-blinkoff150-blinkon175
 set nu
 set nohlsearch
 set noerrorbells
 set scrolloff=40
 set signcolumn=yes
 set colorcolumn=80
-set nobackup " We have vcs, we don't need backups.
-set nowritebackup " We have vcs, we don't need backups.
-set noswapfile " They're just annoying. Who likes them?
 set undodir=~/.vim/undodir
 set undofile
-set hidden " allow me to have buffers with unsaved changes.
-set autoread " when a file has changed on disk, just load it. Don't ask.
-set ignorecase " case insensitive search
-set smartcase " If there are uppercase letters, become case-sensitive.
-set incsearch " live incremental searching
-set showmatch " live match highlighting
-set hlsearch " highlight matches
-set gdefault " use the `g` flag by default.
+set autoread
+set incsearch
 set virtualedit+=block
 
 " Fold Config
@@ -126,3 +120,7 @@ augroup END
 
 " CtrlLSF
 let g:ctrlsf_backend = 'ack'
+
+" HardTime
+let g:hardtime_default_on = 1
+" let g:hardtime_maxcount = 2
