@@ -15,12 +15,13 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };
+static char *fonts[]          = { "FiraCode Nerd Font:size=10:antialias=true:autohint:true", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
+/* static char *fonts[]          = { "monospace:size=10", "JoyPixels:pixelsize=10:antialias=true:autohint=true"  };*/
 static char normbgcolor[]           = "#222222";
 static char normbordercolor[]       = "#444444";
 static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#005577";
+static char selbordercolor[]        = "#770000";
 static char selbgcolor[]            = "#005577";
 static char *colors[][3] = {
        /*               fg           bg           border   */
@@ -41,6 +42,7 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
+/* static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }; */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
@@ -171,12 +173,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_y,		setlayout,	{.v = &layouts[3]} }, /* dwindle */
 	{ MODKEY,			XK_u,		setlayout,	{.v = &layouts[4]} }, /* deck */
 	{ MODKEY|ShiftMask,		XK_u,		setlayout,	{.v = &layouts[5]} }, /* monocle */
-	{ MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} }, /* centeredmaster */
-	{ MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[7]} }, /* centeredfloatingmaster */
+	/* { MODKEY,			XK_i,		setlayout,	{.v = &layouts[6]} }, /1* centeredmaster *1/ */
+	/* { MODKEY|ShiftMask,		XK_i,		setlayout,	{.v = &layouts[7]} }, /1* centeredfloatingmaster *1/ */
 /*	{ MODKEY,			XK_o,		incnmaster,     {.i = +1 } },*/
 /*	{ MODKEY|ShiftMask,		XK_o,		incnmaster,     {.i = -1 } },*/
-	{ MODKEY|ShiftMask,			XK_p,			spawn,		SHCMD("mpc toggle") },
-	/* { MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("mpc pause ; pauseallmpv") }, */
+	{ MODKEY,			XK_p,			spawn,		SHCMD("mpc toggle") },
+	{ MODKEY|ShiftMask,		XK_p,			spawn,		SHCMD("mpc pause ; pauseallmpv") },
 	{ MODKEY,			XK_bracketleft,		spawn,		SHCMD("mpc seek -10") },
 	{ MODKEY|ShiftMask,		XK_bracketleft,		spawn,		SHCMD("mpc seek -60") },
 	{ MODKEY,			XK_bracketright,	spawn,		SHCMD("mpc seek +10") },
@@ -194,9 +196,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
 	{ MODKEY,			XK_g,		shiftview,	{ .i = -1 } },
 	{ MODKEY|ShiftMask,		XK_g,		shifttag,	{ .i = -1 } },
-	{ MODKEY,			XK_o,		setmfact,	{.f = -0.05} },
+	{ MODKEY,			XK_h,		setmfact,	{.f = -0.05} },
 	/* J and K are automatically bound above in STACKEYS */
-	{ MODKEY,			XK_p,		setmfact,      	{.f = +0.05} },
+	{ MODKEY,			XK_l,		setmfact,      	{.f = +0.05} },
 	{ MODKEY,			XK_semicolon,	shiftview,	{ .i = 1 } },
 	{ MODKEY|ShiftMask,		XK_semicolon,	shifttag,	{ .i = 1 } },
 	{ MODKEY,			XK_apostrophe,	togglescratch,	{.ui = 1} },
@@ -227,10 +229,10 @@ static Key keys[] = {
 	{ MODKEY,			XK_Right,	focusmon,	{.i = +1 } },
 	{ MODKEY|ShiftMask,		XK_Right,	tagmon,		{.i = +1 } },
 
-	{ MODKEY,			XK_h,	focusmon,	{.i = -1 } },
-	{ MODKEY|ShiftMask,		XK_h,	tagmon,		{.i = -1 } },
-	{ MODKEY,			XK_l,	focusmon,	{.i = +1 } },
-	{ MODKEY|ShiftMask,		XK_l,	tagmon,		{.i = +1 } },
+	{ MODKEY,			XK_i,	focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,		XK_i,	tagmon,		{.i = -1 } },
+	{ MODKEY,			XK_o,	focusmon,	{.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_o,	tagmon,		{.i = +1 } },
 
 	{ MODKEY,			XK_Page_Up,	shiftview,	{ .i = -1 } },
 	{ MODKEY|ShiftMask,		XK_Page_Up,	shifttag,	{ .i = -1 } },
@@ -252,6 +254,9 @@ static Key keys[] = {
 	{ MODKEY,			XK_F12,		spawn,		SHCMD("remaps & notify-send \\\"⌨️ Keyboard remapping...\\\" \\\"Re-running keyboard defaults for any newly plugged-in keyboards.\\\"") },
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
+
+  /* Change keyboard layout */
+	{ MODKEY|ShiftMask,			XK_l,		spawn, SHCMD("change-kb-layout") },
 
 	{ 0,				XK_Print,	spawn,		SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maimpick") },

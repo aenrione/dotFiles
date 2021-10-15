@@ -1,0 +1,7 @@
+#!/bin/sh
+# requirements: dmenu, xorg-setxkbmap
+kb_choice="$(awk '/! layout/{flag=1; next} /! variant/{flag=1; next} flag {print $2, "- " $1}' /usr/share/X11/xkb/rules/base.lst | dmenu -l 15)"
+
+kb="$(echo "$kb_choice" | awk '{print $3}')"
+setxkbmap "$kb"
+pkill -RTMIN+30 "${STATUSBAR:-dwmblocks}"
