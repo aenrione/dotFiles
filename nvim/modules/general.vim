@@ -6,7 +6,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'VundleVim/Vundle.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Plugin 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -33,12 +33,12 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-css-color'
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'takac/vim-hardtime'
 
 
 " LSP CONFIG
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'williamboman/nvim-lsp-installer'
+" Plug 'hrsh7th/nvim-compe'
 
 " ColorSchemes Plugins
 Plug 'morhetz/gruvbox'
@@ -86,7 +86,7 @@ set foldclose=all
 " zr - reduces auto fold depth
 
 " AutoSave
-let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:auto_save = 0  " enable AutoSave on Vim startup
 
 "Color Settings
 colorscheme gruvbox
@@ -120,7 +120,3 @@ augroup END
 
 " CtrlLSF
 let g:ctrlsf_backend = 'ack'
-
-" HardTime
-let g:hardtime_default_on = 1
-" let g:hardtime_maxcount = 2

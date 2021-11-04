@@ -28,7 +28,7 @@ xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
 " Coc
-" nmap gd <Plug>(coc-definition)
+nmap gd <Plug>(coc-definition)
 " nmap <leader> gy <Plug>(coc-type-definition)
 " nmap <leader> gi <Plug>(coc-implementation)
 
@@ -46,7 +46,7 @@ nnoremap <leader>gm :lua require('telescope').extensions.git_worktree.create_git
 nmap <leader>gs :G<CR>
 nmap <leader>gd :Gdiff<CR>
 nmap <leader>gf :diffget //3<CR>
-nmap <leader>gj :diffget // <CR>
+nmap <leader>gj :diffget //2 <CR>
 nmap <leader>g1 :Git -c push.default=current push<CR>
 
 " PrimeAgen https://www.youtube.com/watch?v=hSHATqh8svM
