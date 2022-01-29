@@ -27,6 +27,10 @@ vnoremap / /\v
 xnoremap K :move '<-2<CR>gv-gv
 xnoremap J :move '>+1<CR>gv-gv
 
+" Terminal-mode
+tnoremap <Esc> <C-\><C-n>
+tnoremap kj <C-\><C-n>
+
 " Coc
 nmap gd <Plug>(coc-definition)
 " nmap <leader> gy <Plug>(coc-type-definition)
@@ -119,3 +123,8 @@ cmap <M-j> <down>
 " Vim-Commentary
 nnoremap <space>/ :Commentary<CR>
 vnoremap <space>/ :Commentary<CR>
+
+" NeoTerm
+nnoremap <leader>tl :<c-u>exec v:count.'Tclear'<cr>
+nnoremap <leader>tsl :TREPLSendLine<cr>
+vnoremap <leader>tss :TREPLSendSelection<cr>

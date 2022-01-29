@@ -11,7 +11,7 @@ let g:ale_fixers = {
       \  'javascript': ['eslint'],
       \}
 
-let g:airline#extensions#ale#enabled = 1 "Integration with vim-airline
+" let g:airline#extensions#ale#enabled = 1 "Integration with vim-airline
 " Set this variable to 1 to fix files when you save them.
 let g:ale_fix_on_enter = 1
 let g:ale_fix_on_save = 1

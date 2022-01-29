@@ -33,6 +33,12 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'ap/vim-css-color'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'kassio/neoterm'
+Plug 'xianzhon/vim-code-runner'
+Plug 'SirVer/ultisnips'
+Plug 'mlaursen/vim-react-snippets'
+Plug 'honza/vim-snippets'
+
 
 
 " LSP CONFIG
@@ -75,6 +81,7 @@ set undofile
 set autoread
 set incsearch
 set virtualedit+=block
+set autowrite
 
 " Fold Config
 set foldmethod=indent
@@ -86,7 +93,7 @@ set foldclose=all
 " zr - reduces auto fold depth
 
 " AutoSave
-let g:auto_save = 0  " enable AutoSave on Vim startup
+let g:auto_save = 1  " enable AutoSave on Vim startup
 
 "Color Settings
 colorscheme gruvbox
@@ -120,3 +127,13 @@ augroup END
 
 " CtrlLSF
 let g:ctrlsf_backend = 'ack'
+
+" NeoTerm
+let g:neoterm_default_mod='belowright' " open terminal in bottom split
+let g:neoterm_size=16 " terminal split size
+let g:neoterm_autoscroll=1 " scroll to the bottom when running a command
+
+"Ultisnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
