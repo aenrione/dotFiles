@@ -1,9 +1,7 @@
 /* See LICENSE file for copyright and license details. */
-/* Constants */
-#define TERMINAL "st"
-#define TERMCLASS "St"
+
 /* appearance */
-static const unsigned int borderpx  = 5;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 20;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 20;       /* vert inner gap between windows */
@@ -16,15 +14,14 @@ static const int vertpad            = 20;       /* vertical padding of bar */
 static const int sidepad            = 20;       /* horizontal padding of bar */
 static const int horizpadbar        = 70;        /* horizontal padding for statusbar */
 static const int vertpadbar         = 12;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "FiraCode Nerd Font:size=12",
+static const char *fonts[]          = { "JetbrainsMono nerd font:size=12",
 "Material Design Icons Desktop:size=12"
 };
 // Set theme
-static const char col_bg[]          = "#2d3139";
-static const char col_gray[]        = "#6c7689";
+static const char col_bg[]          = "#1E1D2F";
+static const char col_gray[]        = "#6E6C7E";
 static const char col_white[]       = "#D9E0EE";
-static const char col_border[]      = "#770000";
-// static const char col_border[]      = "#96CDFB";
+static const char col_border[]      = "#96CDFB";
 static const char *colors[][3]      = {
 [SchemeNorm]     = { col_gray, col_bg,  col_bg },
 [SchemeSel]      = { col_white, col_bg,  col_border  },
@@ -75,13 +72,12 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
-#include <X11/XF86keysym.h>
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]",      tile },    /* first entry is default */
 	{ "[M]",      monocle },
-	{ "|@|",      spiral },
+	{ "󰕖",      spiral },
 	{ "󰹵",     dwindle },
 	{ "H[]",      deck },
 	{ "TTT",      bstack },
@@ -115,45 +111,20 @@ static const char *rofiwcmd[]     = { "rofi", "-show", "window", NULL };
 static const char *termcmd[]      = { "st", NULL };
 static const char *fmcmd[]        = { "pcmanfm", NULL };
 static const char *tuifmcmd[]     = { "st", "-e", "ranger", NULL };
-static const char *webcmd[]       = { "$BROWSER", NULL };
+static const char *webcmd[]       = { "brave", NULL };
 static const char *scrotcmd[]     = { "scrot", NULL };
-static const char *profilecmd[]     = { "asusctl profile -n", NULL };
 
 #include "movestack.c"
 static Key keys[] = {
 // Apps 
 { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 { MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-{MODKEY, XK_w, spawn, SHCMD("$BROWSER")},
-{MODKEY, XK_r, spawn, SHCMD(TERMINAL " -e lfrun")},
+{ MODKEY,                       XK_w,      spawn,          {.v = webcmd } },
 { MODKEY,                       XK_e,      spawn,          {.v = tuifmcmd } },
 { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = scrotcmd } },
 { MODKEY|ShiftMask,             XK_Return, spawn,          {.v = roficmd } },
 { MODKEY|ShiftMask,             XK_d,      spawn,          {.v = rofiwcmd } },
 { MODKEY|ShiftMask,             XK_e,      spawn,          {.v = fmcmd } },
-{MODKEY | ShiftMask, XK_q, spawn, SHCMD("sysact")},
-{MODKEY | ControlMask, XK_k, spawn, SHCMD("change-kb-layout")},
-{MODKEY | ShiftMask, XK_l, spawn, SHCMD("dlpass copy")},
-{MODKEY | ShiftMask, XK_m, spawn, SHCMD(TERMINAL " -e htop")},
-{ MODKEY,                       XK_m,	     spawn, SHCMD(TERMINAL " -e ncmpcpp") },
-{0, XF86XK_AudioRaiseVolume, spawn,
- SHCMD("pactl -- set-sink-volume 0 +5%")},
-{0, XF86XK_AudioLowerVolume, spawn,
- SHCMD("pactl -- set-sink-volume 0 -5%")},
-{0, XF86XK_AudioMute, spawn,
- SHCMD("pactl -- set-sink-mute 0 toggle")},
-{0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set 15+")},
-{0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 15-")},
-{0, XF86XK_KbdBrightnessUp, spawn, SHCMD("brightnessctl --device='asus::kbd_backlight' set 1+")},
-{0, XF86XK_KbdBrightnessDown, spawn, SHCMD("brightnessctl --device='asus::kbd_backlight' set 1-")},
-{0, XF86XK_Launch3, spawn, SHCMD("asusctl led-mode -n")},
-{0, XF86XK_Launch4, spawn, SHCMD("asusctl profile -n")},
-    {MODKEY, XK_F3, spawn, SHCMD("displayselect")},
-    {MODKEY, XK_F9, spawn, SHCMD("dmenumount")},
-    {MODKEY, XK_F10, spawn, SHCMD("dmenuumount")},
-    {0, XK_Print, spawn, SHCMD("maimpick")},
-    {ShiftMask, XK_Print, spawn, SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png")},
-
 // Layout Controls
 { MODKEY,                       XK_f,      togglefloating, {0} },
 { MODKEY,                       XK_Tab,    cyclelayout,    {.i = +1 } }, 
@@ -161,36 +132,23 @@ static Key keys[] = {
 { MODKEY|ShiftMask,             XK_space,  togglefullscr,  {0} },
 { MODKEY,                       XK_b,  togglebar,      {0} },
 { MODKEY,                       XK_c, zoom,           {0} },
-{MODKEY | ShiftMask, XK_t, setlayout, {.v = &layouts[1]}}, /* bstack */
-{MODKEY, XK_y, setlayout, {.v = &layouts[2]}},             /* spiral */
-{MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[3]}}, /* dwindle */
-{MODKEY, XK_u, setlayout, {.v = &layouts[4]}},             /* deck */
-{MODKEY | ShiftMask, XK_u, setlayout, {.v = &layouts[5]}}, /* monocle */
-{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
-{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 // Dwm Stuff
 { MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 { MODKEY|ControlMask,           XK_v,      incnmaster,     {.i = +1 } },
 { MODKEY|ControlMask,           XK_h,      incnmaster,     {.i = -1 } },
 { MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-{MODKEY, XK_q, killclient, {0}},
 { MODKEY,                       XK_space,  focusstack,     {.i = +1 } },
-{MODKEY, XK_j, focusstack, {.i = +1}},
-{MODKEY, XK_k, focusstack, {.i = -1}},
 { MODKEY|ShiftMask,             XK_r,      quit,           {1} }, 
+{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-{ MODKEY,                       XK_i,      focusmon,       {.i = -1 } },
-{ MODKEY,                       XK_o,      focusmon,       {.i = +1 } },
-{MODKEY | ShiftMask,            XK_i,      tagmon,         {.i = -1}},
-{MODKEY | ShiftMask,            XK_o,      tagmon,         {.i = +1}},
 { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 //Scratchpads
 { MODKEY,                       XK_p,      togglescratch,  {.ui = 0 } },
 { MODKEY,                       XK_s,	     togglescratch,  {.ui = 1 } },
-// { MODKEY,                       XK_m,	     togglescratch,  {.ui = 2 } },
+{ MODKEY,                       XK_m,	     togglescratch,  {.ui = 2 } },
 // Tags
 TAGKEYS(                        XK_1,                      0)
 TAGKEYS(                        XK_2,                      1)

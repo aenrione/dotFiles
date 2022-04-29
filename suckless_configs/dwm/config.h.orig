@@ -75,7 +75,6 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
-#include <X11/XF86keysym.h>
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -103,7 +102,13 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
-
+#define STACKKEYS(MOD, ACTION)                                                 \
+  {MOD, XK_j, ACTION##stack, {.i = INC(+1)}},                                  \
+      {MOD, XK_k, ACTION##stack, {.i = INC(-1)}},                              \
+      {MOD,                                                                    \
+       XK_v,                                                                   \
+       ACTION##stack,                                                          \
+       {.i = 0}},
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
@@ -117,9 +122,7 @@ static const char *fmcmd[]        = { "pcmanfm", NULL };
 static const char *tuifmcmd[]     = { "st", "-e", "ranger", NULL };
 static const char *webcmd[]       = { "$BROWSER", NULL };
 static const char *scrotcmd[]     = { "scrot", NULL };
-static const char *profilecmd[]     = { "asusctl profile -n", NULL };
 
-#include "movestack.c"
 static Key keys[] = {
 // Apps 
 { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
@@ -131,29 +134,10 @@ static Key keys[] = {
 { MODKEY|ShiftMask,             XK_Return, spawn,          {.v = roficmd } },
 { MODKEY|ShiftMask,             XK_d,      spawn,          {.v = rofiwcmd } },
 { MODKEY|ShiftMask,             XK_e,      spawn,          {.v = fmcmd } },
-{MODKEY | ShiftMask, XK_q, spawn, SHCMD("sysact")},
+{MODKEY | ShiftMask, XK_q, spawn, SHCMD("pkill dwm")},
 {MODKEY | ControlMask, XK_k, spawn, SHCMD("change-kb-layout")},
 {MODKEY | ShiftMask, XK_l, spawn, SHCMD("dlpass copy")},
 {MODKEY | ShiftMask, XK_m, spawn, SHCMD(TERMINAL " -e htop")},
-{ MODKEY,                       XK_m,	     spawn, SHCMD(TERMINAL " -e ncmpcpp") },
-{0, XF86XK_AudioRaiseVolume, spawn,
- SHCMD("pactl -- set-sink-volume 0 +5%")},
-{0, XF86XK_AudioLowerVolume, spawn,
- SHCMD("pactl -- set-sink-volume 0 -5%")},
-{0, XF86XK_AudioMute, spawn,
- SHCMD("pactl -- set-sink-mute 0 toggle")},
-{0, XF86XK_MonBrightnessUp, spawn, SHCMD("brightnessctl set 15+")},
-{0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 15-")},
-{0, XF86XK_KbdBrightnessUp, spawn, SHCMD("brightnessctl --device='asus::kbd_backlight' set 1+")},
-{0, XF86XK_KbdBrightnessDown, spawn, SHCMD("brightnessctl --device='asus::kbd_backlight' set 1-")},
-{0, XF86XK_Launch3, spawn, SHCMD("asusctl led-mode -n")},
-{0, XF86XK_Launch4, spawn, SHCMD("asusctl profile -n")},
-    {MODKEY, XK_F3, spawn, SHCMD("displayselect")},
-    {MODKEY, XK_F9, spawn, SHCMD("dmenumount")},
-    {MODKEY, XK_F10, spawn, SHCMD("dmenuumount")},
-    {0, XK_Print, spawn, SHCMD("maimpick")},
-    {ShiftMask, XK_Print, spawn, SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png")},
-
 // Layout Controls
 { MODKEY,                       XK_f,      togglefloating, {0} },
 { MODKEY,                       XK_Tab,    cyclelayout,    {.i = +1 } }, 
@@ -166,8 +150,6 @@ static Key keys[] = {
 {MODKEY | ShiftMask, XK_y, setlayout, {.v = &layouts[3]}}, /* dwindle */
 {MODKEY, XK_u, setlayout, {.v = &layouts[4]}},             /* deck */
 {MODKEY | ShiftMask, XK_u, setlayout, {.v = &layouts[5]}}, /* monocle */
-{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
-{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 // Dwm Stuff
 { MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
@@ -190,7 +172,7 @@ static Key keys[] = {
 //Scratchpads
 { MODKEY,                       XK_p,      togglescratch,  {.ui = 0 } },
 { MODKEY,                       XK_s,	     togglescratch,  {.ui = 1 } },
-// { MODKEY,                       XK_m,	     togglescratch,  {.ui = 2 } },
+{ MODKEY,                       XK_m,	     togglescratch,  {.ui = 2 } },
 // Tags
 TAGKEYS(                        XK_1,                      0)
 TAGKEYS(                        XK_2,                      1)
