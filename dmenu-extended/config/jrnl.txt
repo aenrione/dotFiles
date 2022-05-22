@@ -1,0 +1,10 @@
+{
+    "default_settings": {
+        "display_entry_titles_only": true,
+        "gui_editor": false,
+        "indicator_has_body": "*",
+        "indicator_no_body": "-",
+        "keep_open_after_edit": false
+    },
+    "user_settings": {}
+}
