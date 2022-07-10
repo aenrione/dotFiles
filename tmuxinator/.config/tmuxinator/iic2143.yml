@@ -1,0 +1,10 @@
+# /home/aenrione/.config/tmuxinator/tws.yml
+
+name: iic2143
+root: ~/my-github/grupo-43/
+windows:
+  - editor: lvim .
+  - servers:
+      panes:
+        - rails c
+        - rails s
