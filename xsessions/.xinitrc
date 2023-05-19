@@ -1,4 +1,5 @@
+xrandr --output eDP --scale 0.6x0.6
 ~/.fehbg
 remaps
-xrandr --output eDP --scale 0.5x0.5
+/usr/libexec/xfce-polkit &
 exec dwm

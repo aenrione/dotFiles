@@ -1,6 +1,6 @@
 # /home/aenrione/.config/tmuxinator/tws.yml
 
-name: budgetj
+name: budget
 root: ~/my-github/budget/
 windows:
   - editor: lvim .
@@ -8,5 +8,5 @@ windows:
       panes:
         - cd budget-tracker-rails/ && redis-server
         - cd budget-tracker-rails/ && bundle exec sidekiq
-        - cd budget-tracker-react/ && expo start
+        - cd budget-tracker-react/ && yarn start
         - cd budget-tracker-rails/ && rails s -b 0.0.0.0

@@ -17,23 +17,19 @@ HISTFILE=~/.zsh_history
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/aliasrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 
-# Basic auto/tab complete:
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit
-_comp_options+=(globdots)		# Include hidden files.
+# Android
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
+#nvm
+export NVM_LAZY_LOAD=true
+source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+
 
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
-
-# Use vim keys in tab complete menu:
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v '^?' backward-delete-char
 
 # Use lf to switch directories and bind it to ctrl-o
 lfcd () {
@@ -61,30 +57,13 @@ source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.
 [ -d "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins/zsh-autosuggestions" ] &&
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# place this after nvm initialization!
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
 
 source ~/.zprofile
-export PATH=$PATH:/home/aenrione/.spicetify
+# -- START ACTIVESTATE INSTALLATION
+export PATH="/home/aenrione/.local/ActiveState/StateTool/release/bin:$PATH"
+# -- STOP ACTIVESTATE INSTALLATION
+# -- START ACTIVESTATE DEFAULT RUNTIME ENVIRONMENT
+export PATH="/home/aenrione/.cache/activestate/bin:$PATH"
+# -- STOP ACTIVESTATE DEFAULT RUNTIME ENVIRONMENT
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"

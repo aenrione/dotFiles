@@ -42,7 +42,7 @@ fi
 
 # Item List
 main_list () {
-    bw list items | jq -r '.[] | "\(.name) | \(.id)"'
+    bw list items | jq -r '.[] | "\(.name) | \(.login.username)"'
 }
 
 # Get account name

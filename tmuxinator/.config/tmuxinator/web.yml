@@ -1,0 +1,9 @@
+name: web
+root: ~/my-github/puc/grupo-Le-Croix-frontend
+windows:
+  - editor: lvim .
+  - servers:
+      panes:
+        - $BROWSER http://localhost:5173 && yarn dev
+        # - cd RuteroCL-Back/ && rails s
+

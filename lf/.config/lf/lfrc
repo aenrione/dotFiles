@@ -1,0 +1,39 @@
+cmd mkdir %{{
+    printf "Make directory: "
+    read ans
+    mkdir $ans
+}}
+cmd editor ${{
+    if [ -z "$fs" ]; then
+        "$EDITOR" "$f"
+    else
+        IFS="$(printf '\n\t')"; "$EDITOR" "$f"
+    fi
+}}
+
+cmd terminal ${{
+cd "$(dirname "$SELECTED")" && st
+}}
+
+map . set hidden!
+map DD delete
+map p paste
+map x cut
+map y copy
+map <enter> open
+map md mkdir
+map a mkdir
+map ch chmod
+map r rename
+map K top
+map J bottom
+map R reload
+map C clear
+map v select
+map V editor
+map T terminal
+
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id

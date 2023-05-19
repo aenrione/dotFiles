@@ -1,0 +1,1 @@
+scrcpy -b2M

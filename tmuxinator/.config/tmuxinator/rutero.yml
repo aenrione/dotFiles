@@ -1,0 +1,13 @@
+# /home/aenrione/.config/tmuxinator/tws.yml
+
+name: budget
+root: ~/my-github/rutero/
+windows:
+  - editor: lvim .
+  - servers:
+      panes:
+        - cd RuteroCL-Front/ && nvm use 16 && BASE_URL=http://localhost:8080 npm run dev
+        - cd RuteroCL-Back/ && redis-server
+        - cd RuteroCL-Back/ && bundle exec sidekiq
+        - cd RuteroCL-Back/ && rails s
+
