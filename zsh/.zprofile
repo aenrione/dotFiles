@@ -25,3 +25,7 @@ alias vim="lvim"
 alias f="fuck"
 alias tws="tmuxinator start tws"
 alias budget="tmuxinator start budget"
+
+if [ -e "./.zsecrets" ]; then
+    source "./.zsecrets"
+fi

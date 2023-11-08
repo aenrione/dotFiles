@@ -5,7 +5,9 @@
 xset r rate 300 50
 # colemak
 #setxkbmap us -variant cmk_ed_dh
-setxkbmap us
+kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" || exit 1
+
+setxkbmap "$kb"
 # Map the caps lock key to super...
 # setxkbmap -option caps:super
 # Activate Extended Layout Dreymar

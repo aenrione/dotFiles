@@ -1,3 +1,5 @@
 lunarvim/.config/lvim/ignore
 lunarvim/.config/lvim/plugin/
-
+lunarvim/.config/nvim/pack/*
+.luarc.json
+.config/nvim/pack/*

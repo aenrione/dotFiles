@@ -1,5 +1,5 @@
-xrandr --output eDP --scale 0.6x0.6
-~/.fehbg
+~/.screenlayout/screen-select.sh
 remaps
 /usr/libexec/xfce-polkit &
 exec dwm
+sh /opt/scripts/battery-status-1.sh &

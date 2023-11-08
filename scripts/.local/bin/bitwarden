@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 sessionKeyFile="$HOME/.cache/bwsession"
 source "$HOME/.zshrc" # assuming bw is in NVM
 source $sessionKeyFile
@@ -40,6 +40,7 @@ if [ "$lockedStatus" != "unlocked" ] ; then
 fi
 
 
+bw sync
 # Item List
 main_list () {
     bw list items | jq -r '.[] | "\(.name) | \(.login.username)"'

@@ -63,23 +63,30 @@ imap <M-k> <up>
 imap <M-l> <right>
 imap <M-f> <C-right>
 imap <M-b> <C-left>
+
+nnoremap L <Cmd>bnext<CR>
+nnoremap H <Cmd>bprevious<CR>
+:set nohlsearch
 ]])
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
--- lvim.builtin.which_key.mappings["t"] = {
---   name = "+Trouble",
---   r = { "<cmd>Trouble lsp_references<cr>", "References" },
---   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
---   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
---   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
---   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
---   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
--- }
+lvim.builtin.which_key.mappings["t"] = { "<cmd>ToggleTerm<CR>", "Terminal" }
+lvim.builtin.which_key.mappings["a"] = {
+  name = "Arduino",
+  a = { "<cmd>ArduinoAttach<cr>", "Automatically attach to your board" },
+  b = { "<cmd>ArduinoChooseBoard<cr>", "Select the board" },
+  p = { "<cmd>ArduinoChooseProgrammer<cr>", "Select the programmer" },
+  s = { "<cmd>ArduinoChoosePort<cr>", "Choose Port" },
+  v = { "<cmd>ArduinoVerify<cr>", "Build sketch" },
+  u = { "<cmd>ArduinoUpload<cr>", "Upload" },
+  c = { "<cmd>ArduinoSerial<cr>", "Connect to the board for debugging over a serial port." },
+  x = { "<cmd>ArduinoUploadAndSerial<cr>", "Build, upload, and connect for debugging." },
+  i = { "<cmd>ArduinoInfo<cr>", "Display internal information" },
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
@@ -106,11 +113,11 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- generic LSP settings
 
 -- ---@usage disable automatic installation of servers
--- lvim.lsp.automatic_servers_installation = false
+lvim.lsp.automatic_servers_installation = false
 
 -- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 -- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "volar, tailwindcss" })
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
@@ -134,8 +141,9 @@ lvim.builtin.treesitter.highlight.enabled = true
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "autopep8", filetypes = { "python" } },
-  { command = "rubocop", filetypes = { "ruby" } },
-  { command = "rufo", filetypes = { "ruby" } },
+  -- { command = "rubocop",  filetypes = { "ruby" } },
+  -- { command = "rufo",     filetypes = { "ruby" } },
+  { command = "prettier", filetypes = { "vue" } },
   -- { command = "eslint", filetypes = { "eruby", "html", "html.erb", "html-erb" } },
   --   {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -151,8 +159,8 @@ formatters.setup {
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "flake8", filetypes = { "python" } },
-  { command = "eslint", filetypes = { "vue", "eruby", "html", "html.erb" } },
+  { command = "flake8",  filetypes = { "python" } },
+  { command = "eslint",  filetypes = { "vue", "eruby", "html", "html.erb" } },
   { command = "rubocop", filetypes = { "ruby" } }
   --   {
   --     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -170,17 +178,105 @@ linters.setup {
 
 -- Additional Plugins
 lvim.plugins = {
+  { 'stevearc/vim-arduino' },
+  {
+    "stevearc/dressing.nvim",
+    config = function()
+      require("dressing").setup({
+        input = { enabled = false },
+      })
+    end,
+  },
   { 'lukas-reineke/indent-blankline.nvim' },
   { 'mg979/vim-visual-multi' },
   { 'tpope/vim-endwise' },
   { 'morhetz/gruvbox' },
-  { 'chrisbra/Colorizer' },
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("chatgpt").setup()
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  },
+  {
+    "github/copilot.vim",
+    -- event = "VeryLazy",
+    config = function()
+      -- copilot assume mapped
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_no_tab_map = true
+    end,
+  },
+  {
+    "hrsh7th/cmp-copilot",
+    config = function()
+      lvim.builtin.cmp.formatting.source_names["copilot"] = "( )"
+      table.insert(lvim.builtin.cmp.sources, 2, { name = "copilot" })
+    end,
+  },
+  -- { 'chrisbra/Colorizer' },
   {
     "pwntester/octo.nvim",
     event = "BufRead",
   },
-  { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' },
-  { 'iamcco/markdown-preview.nvim' }
+  { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  {
+    "iamcco/markdown-preview.nvim",
+    ft = "markdown",
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
+  {
+    "epwalsh/obsidian.nvim",
+    config = function()
+      require("obsidian").setup({
+        event = {
+          "BufReadPre /home/aenrione/Documents/Obsidian Vault/**.md",
+          "BufNewFile /home/aenrione/Documents/Obsidian Vault/**.md",
+        },
+        dependencies = {
+          -- Required.
+          "nvim-lua/plenary.nvim",
+
+        },
+        dir = "~/Documents/Obsidian Vault", -- no need to call 'vim.fn.expand' here
+        completion = {
+          -- If using nvim-cmp, otherwise set to false
+          nvim_cmp = true,
+          -- Trigger completion at 2 chars
+          min_chars = 2,
+          -- Where to put new notes created from completion. Valid options are
+          --  * "current_dir" - put new notes in same directory as the current buffer.
+          --  * "notes_subdir" - put new notes in the default notes subdirectory.
+          new_notes_location = "current_dir",
+
+          -- Whether to add the output of the node_id_func to new notes in autocompletion.
+          -- E.g. "[[Foo" completes to "[[foo|Foo]]" assuming "foo" is the ID of the note.
+          prepend_note_id = true
+        },
+      })
+    end,
+    completion = {
+      -- If using nvim-cmp, otherwise set to false
+      nvim_cmp = true,
+      -- Trigger completion at 2 chars
+      min_chars = 2,
+      -- Where to put new notes created from completion. Valid options are
+      --  * "current_dir" - put new notes in same directory as the current buffer.
+      --  * "notes_subdir" - put new notes in the default notes subdirectory.
+      new_notes_location = "current_dir",
+
+      -- Whether to add the output of the node_id_func to new notes in autocompletion.
+      -- E.g. "[[Foo" completes to "[[foo|Foo]]" assuming "foo" is the ID of the note.
+      prepend_note_id = true
+    },
+  }
 }
 
 -- additional options
@@ -198,11 +294,11 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   -- enable wrap mode for json files only
   command = ":normal zz",
 })
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = { "*" },
-  -- enable wrap mode for json files only
-  command = ":ColorHighlight",
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = { "*" },
+--   -- enable wrap mode for json files only
+--   -- command = ":ColorHighlight",
+-- })
 -- vim.api.nvim_create_autocmd("FileType", {
 --   pattern = "zsh",
 --   callback = function()
