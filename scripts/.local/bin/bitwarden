@@ -1,62 +1,66 @@
-#!/bin/zsh
-sessionKeyFile="$HOME/.cache/bwsession"
-source "$HOME/.zshrc" # assuming bw is in NVM
-source $sessionKeyFile
-bwstatus=$(bw status)
+#!/usr/bin/env bash
 
-_write_token()
-{
-  # output session key to file
-  if [ -n "$sessionKeyFile" ]; then
-      printf 'export BW_SESSION="%s"' \
-          "$token" > "$sessionKeyFile"
-  fi
-}
-_login()
-{
-	notify-send -u normal "Bitwarden" "Login is required"
-	user_email=$(echo "" | dmenu -p "Bitarden email")
-	password=$(echo "" | dmenu -p "Bitwarden password")
-	token=$(bw login "$user_email" "$password" | awk '/export/ {print $3}' | sed 's/"//g' | cut -d'=' -f2)
-  _write_token
+# Function to retrieve item list
+retrieve_item_list() {
+    rbw list --fields user,name | tail -n +2 | awk '{print $1, "|", $2}'
 }
 
-_unlock()
-{
-	notify-send -u normal "Bitwarden" "Unlock is required"
-  [ -z $token ] && token=$(bw unlock $(echo "" | dmenu -p "Password:" -nf black -nb black) | awk '/export/ {print $3}' | sed 's/"//g' | cut -d'=' -f2)
-  _write_token
+# Function to prompt for item selection
+prompt_item_selection() {
+    selected_item=$(retrieve_item_list | dmenu -p "name: " -l 7 -i)
+    name=$(echo "$selected_item" | awk '{print $3}')
+    user=$(echo "$selected_item" | awk '{print $1}')
 }
 
-# Check login status. If email isn't available, login
-email=$(echo $bwstatus | jq '.userEmail')
-[[ "$email" == "null" ]] && _login
+# Retrieve item list
+retrieve_item_list
 
+# Prompt for item selection
+prompt_item_selection
+echo $id
 
-# Unlock the vault
-lockedStatus=$(echo $bwstatus | jq -r '.status')
-if [ "$lockedStatus" != "unlocked" ] ; then
-    _unlock
+username=$(rbw get $name $user --field Username)
+password=$(rbw get $name $user)
+totp=$(rbw code $name $user)
+note=$(rbw get "$user $name")
+
+# Construct dmenu options based on non-empty fields
+list_options=""
+if [ -n "$username" ]; then
+    list_options+="username"
+fi
+if [ -n "$password" ]; then
+    list_options+="\npassword"
+fi
+if [ -n "$totp" ]; then
+    list_options+="\ntotp"
+fi
+if [ -n "$note" ]; then
+    list_options+="\nnote"
 fi
 
+if [ -z "$list_options" ]; then
+    notify-send -t 2000 "Bitwarden" "No fields to copy"
+    exit 1
+fi
 
-bw sync
-# Item List
-main_list () {
-    bw list items | jq -r '.[] | "\(.name) | \(.login.username)"'
-}
+# dmenu to choose between non-empty fields
+field=$(echo -e "$list_options" | dmenu -p "field: " -l $(echo "$list_options" | wc -l) -i)
+case $field in
+  "username")
+        echo -n "$username" | xclip -i -selection clipboard
+        ;;
+    "password")
+        echo -n "$password" | xclip -i -selection clipboard
+        ;;
+    "totp")
+        echo -n "$totp" | xclip -i -selection clipboard
+        ;;
+    "note")
+      echo -n "$note" | xclip -i -selection clipboard
+      ;;
+esac
 
-# Get account name
-accountName=$(main_list | dmenu -p "name: " -l 7 -i)
-id=${accountName#*|}
-item=$(bw get item $id)
-
-# Copy password to clipboard
-username=$(echo $item | jq -r '.login.username')
-password=$(echo $item | jq -r '.login.password')
-
-
-echo -n $password | xclip -i -selection clipboard
 
 # Clear up clipboard with random garbage after 5 seconds and complete wipe after 2 seconds
 sleep 5

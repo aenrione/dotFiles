@@ -1,0 +1,68 @@
+# ---FZF---
+eval "$(fzf --zsh)"
+
+excluded_dirs=".git node_modules build dist target __pycache__ venv env .venv .mypy_cache .pytest_cache .tox .eggs logs act cmake Sdk .cache Code resources packages .nvm"
+
+# -- Use fd instead of fzf --
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix $(echo $excluded_dirs | sed 's/ / --exclude /g')"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix $(echo $excluded_dirs | sed 's/ / --exclude /g')"
+
+# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --exclude "$(echo $excluded_dirs | sed 's/ / --exclude /g')" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type=d --hidden --exclude "$(echo $excluded_dirs | sed 's/ / --exclude /g')" . "$1"
+}
+
+
+# --- setup fzf theme ---
+fg="#ebdbb2"
+bg="#282828"
+bg_highlight="#3c3836"
+yellow="#d79921"
+orange="#d65d0e"
+red="#fb4934"
+green="#b8bb26"
+blue="#83a598"
+purple="#d3869b"
+aqua="#8ec07c"
+gray="#928374"
+
+export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${yellow},fg+:${fg},bg+:${bg_highlight},hl+:${yellow},info:${blue},prompt:${aqua},pointer:${orange},marker:${orange},spinner:${orange},header:${gray} --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
+
+show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -500; else bat -n --color=always --line-range :500 {}; fi"
+
+export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview' --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -500' --bind 'ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down'"
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always {} | head -500' "$@" ;;
+    export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
+}
+
+source ~/.fzf-git.sh/fzf-git.sh
+
+bindkey '^F' fzf-file-widget
+
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+alias cd="z"
+
+# ---- Auto suggestions
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh

@@ -1,0 +1,47 @@
+---
+- name: Setup development environment
+  hosts: localhost
+  vars:
+    github_username: "aenrione"
+    ssh_key_path: "~/.ssh/id_rsa.pub"
+    target_directory: "~/my-github/mine"
+  vars_prompt:
+    - name: email
+      prompt: What is your email?
+      private: false
+  tasks:
+    - name: Ensure target directory exists
+      file:
+        path: "{{ target_directory }}"
+        state: directory
+
+    - name: Prompt user to authenticate with GitHub CLI
+      pause:
+        prompt: "Please run 'gh auth login' in another terminal window and authenticate with GitHub. Press Enter to continue once authentication is complete."
+
+    - name: Add SSH key to GitHub if not already added
+      command: >
+        bash -c 'gh ssh-key list | grep -q "$(cat {{ ssh_key_path }})" || gh ssh-key add {{ ssh_key_path }} --title "My NixOS Laptop"'
+
+    - name: Fetch GitHub repositories
+      uri:
+        url: "https://api.github.com/users/{{ github_username }}/repos"
+        method: GET
+      register: github_repos
+
+    - name: Set fact for repositories list
+      set_fact:
+        repositories: "{{ github_repos.json | map(attribute='ssh_url') | list }}"
+
+    - name: Clone repositories
+      git:
+        repo: "{{ item }}"
+        dest: "{{ target_directory }}/{{ item | basename | replace('.git', '') }}"
+        clone: yes
+        update: no
+      loop: "{{ repositories }}"
+    - name: Change permissions
+      shell: sudo chown -R "{{github_username}}:" "{{ target_directory }}"
+    - name: Set github variables
+      shell:  git config --global user.email "{{email}}" && git config --global user.name "{{github_username}}"
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Check if laptop screen (eDP) is connected
+if xrandr | grep -q "HDMI-1 connected"; then
+    /home/aenrione/.screenlayout/1-hdmi.sh
+else
+  /home/aenrione/.screenlayout/laptop-screen.sh
+fi
+
+# Check if DisplayPort screen (DP-1-0) is connected
+if xrandr | grep -q "DP-1-0 connected"; then
+  if xrandr | grep -q "HDMI-1 connected"; then
+    /home/aenrione/.screenlayout/3-active.sh
+  else
+    /home/aenrione/.screenlayout/1-usb-c.sh
+  fi
+elif xrandr | grep -q "HDMI-1 connected"; then
+    /home/aenrione/.screenlayout/1-hdmi.sh
+else
+    /home/aenrione/.screenlayout/laptop-screen.sh
+fi
+/home/aenrione/.fehbg

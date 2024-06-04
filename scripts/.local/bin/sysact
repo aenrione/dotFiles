@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# A dmenu wrapper script for system functions.
+export WM="dwm"
+case "$(readlink -f /sbin/init)" in
+    *systemd*) ctl='systemctl' ;;
+    *) ctl='loginctl' ;;
+esac
+before_sleep_cmd="playerctl -l | grep -q . && playerctl pause -a || true"
+
+wmpid(){ # This function is needed if there are multiple instances of the window manager.
+    pgrep -x "$WM"
+}
+
+action=$(printf "🔒 lock\n🚪 leave $WM\n♻ renew $WM\n🐻 hibernate\n🔃 reboot\n🖥shutdown\n💤 sleep\n📺 display off" | dmenu -i -p 'Action: ')
+echo "Selected action: $action"  # Debug statement
+
+case "$action" in
+    '🔒 lock') slock ;;
+    "🚪 leave $WM") pid=$(wmpid); echo "Killing PID: $pid"; kill -TERM "$pid" ;;
+    "♻ renew $WM") pid=$(wmpid); echo "Reloading PID: $pid"; kill -HUP "$pid" ;;
+    '🐻 hibernate') slock $ctl hibernate -i ;;
+    '💤 sleep') $before_sleep_cmd && slock $ctl suspend -i ;;
+    '🔃 reboot') $ctl reboot -i ;;
+    '🖥shutdown') $ctl poweroff -i ;;
+    '📺 display off') xset dpms force off ;;
+    *) exit 1 ;;
+esac
+

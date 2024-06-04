@@ -1,0 +1,17 @@
+#source /home/aenrione/.zshrc
+[ -f ~/.xprofile ] && . ~/.xprofile
+## ~/.xinitrc or ~/.xprofile or ~/.xsession
+# [ -f ~/.zshrc ] && . ~/.zshrc 2> ~/.zshrc_errors.log
+~/.screenlayout/screen-select.sh
+nohup battery_loop.sh > /dev/null 2>&1 &
+
+xmodmap -e "clear lock"
+xmodmap -e "keycode 66 = NoSymbol"
+xmodmap -e "keycode 66 = Mode_switch"
+xmodmap -e "keycode 43 = h H Left Left"
+xmodmap -e "keycode 44 = j J Down Down"
+xmodmap -e "keycode 45 = k K Up Up"
+xmodmap -e "keycode 46 = l L Right Right"
+xmodmap -e "keycode 47 = semicolon colon BackSpace BackSpace"
+xmodmap -e "keycode 24 = q Q Escape Escape"
+

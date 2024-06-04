@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Run xprop to get window information and filter it using grep to extract the class name
+class=$(xprop WM_CLASS | grep -o '"[^"]*"$' | cut -d '"' -f 2)
+
+# Display the class name using notify-send
+notify-send "Window Class" "$class"
+# copy to clipboard
+echo -n "$class" | xclip -selection clipboard
+

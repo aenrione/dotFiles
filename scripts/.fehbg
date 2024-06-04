@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ -f ".wallpaper.png" ]; then
+  echo "Setting wallpaper"
+  feh --no-fehbg --bg-center '.wallpaper.png' 
+fi

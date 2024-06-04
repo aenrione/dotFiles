@@ -3,3 +3,8 @@ lunarvim/.config/lvim/plugin/
 lunarvim/.config/nvim/pack/*
 .luarc.json
 .config/nvim/pack/*
+
+**/*lock.json
+**__pycache__**
+**secrets**
+tmux/**/plugins/*

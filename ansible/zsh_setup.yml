@@ -1,0 +1,50 @@
+---
+- name: Configure Zsh environment
+  hosts: localhost
+  tasks:
+    - name: Ensure curl is installed
+      apt:
+        name: curl
+        state: present
+      become: yes
+      when: ansible_os_family == "Debian"
+    - name: Clone zsh-nvm plugin
+      git:
+        repo: https://github.com/lukechilds/zsh-nvm.git
+        dest: ~/.zsh-nvm
+
+    - name: Clone fzf
+      git:
+        repo: https://github.com/junegunn/fzf.git
+        dest: ~/.fzf
+      register: fzf_install
+
+    - name: Run fzf install script
+      shell: ~/.fzf/install --all
+      # when: fzf_install.changed
+    - name: Clone fzf-git
+      git:
+        repo: https://github.com/junegunn/fzf-git.sh
+        dest: ~/.fzf-git.sh/
+    - name: Clone zsh-autosuggestions
+      git:
+        repo: git@github.com:zsh-users/zsh-autosuggestions.git
+        dest: ~/.zsh/zsh-autosuggestions
+    - name: Clone jenv
+      git:
+        repo: https://github.com/jenv/jenv.git
+        dest: ~/.jenv
+
+    - name: Ensure stow is installed
+      apt:
+        name: stow
+        state: present
+      become: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Stow dotfiles
+      shell: stow -t ~ zsh
+      args:
+        chdir: ~/my-github/mine/dotFiles
+    - name: Install copilot CLI
+      shell: gh extension install github/gh-copilot --force
