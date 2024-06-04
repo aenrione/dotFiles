@@ -1,5 +1,5 @@
 local function search_config()
-  local search_path = vim.fn.expand("~/.dotfiles/neovim/.config/nvim")
+  local search_path = vim.fn.expand("~/.config/nvim")
 
   print("Searching in: " .. search_path)
 

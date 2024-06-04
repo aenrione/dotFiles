@@ -4,7 +4,7 @@ name: tws
 root: ~/my-github/TWS/
 
 windows:
-  - editor: lvim .
+  - editor: $EDITOR .
   - servers:
       panes:
         - cd tws-rails/ && redis-server

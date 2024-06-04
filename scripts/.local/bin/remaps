@@ -1,21 +1,11 @@
 #!/bin/sh
+xmodmap -e "clear lock"
+xmodmap -e "keycode 66 = NoSymbol"
+xmodmap -e "keycode 66 = Mode_switch"
+xmodmap -e "keycode 31 = i I Up Up"
+xmodmap -e "keycode 44 = j J Left Left"
+xmodmap -e "keycode 46 = l L Right Right"
+xmodmap -e "keycode 45 = k K Down Down"
+xmodmap -e "keycode 47 = semicolon colon BackSpace BackSpace"
+xmodmap -e "keycode 24 = q Q Escape Escape"
 
-# This script is called on startup to remap keys.
-# Increase key speed via a rate change
-xset r rate 300 50
-# colemak
-#setxkbmap us -variant cmk_ed_dh
-kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" || exit 1
-
-setxkbmap "$kb"
-# Map the caps lock key to super...
-# setxkbmap -option caps:super
-# Activate Extended Layout Dreymar
-setxkbmap -v 9 -option "" -option "misc:extend,lv5:caps_switch_lock,compose:menu"
-# ## But when it is pressed only once, treat it as escape.
- # killall xcape 2>/dev/null; xcape -e 'Super_L=Escape'
- ## Map the menu button to right super as well.
-# #
- # xmodmap -e 'keycode 135 = Super_R'
-# ## Turn off the caps lock if on since there is no longer a key for it.
- xset -q | grep "Caps Lock:\s*on" && xdotool key Caps_Lock
