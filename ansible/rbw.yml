@@ -1,0 +1,20 @@
+---
+- name: Install rbw from deb package
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install required packages for downloading
+      apt:
+        name: curl
+        state: present
+        update_cache: yes
+
+    - name: Download rbw deb package
+      ansible.builtin.get_url:
+        url: https://git.tozt.net/rbw/releases/deb/rbw_1.9.0_amd64.deb
+        dest: /tmp/rbw_1.9.0_amd64.deb
+
+    - name: Install rbw deb package
+      ansible.builtin.apt:
+        deb: /tmp/rbw_1.9.0_amd64.deb
+

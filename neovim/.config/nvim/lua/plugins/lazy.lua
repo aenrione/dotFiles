@@ -19,6 +19,20 @@ require('lazy').setup({
   { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
   "nvim-neotest/nvim-nio",
   {
+    'dense-analysis/ale',
+    config = function()
+        local g = vim.g
+        g.ale_linters = {
+            ruby = {'rubocop', 'ruby'},
+            lua = {'lua_language_server'}
+        }
+        g.ale_fixers = {
+            ruby = {'rubocop'},
+            lua = {'lua_format'}
+        }
+    end
+  },
+  {
     "folke/which-key.nvim",
     config = function()
       require("plugins.which-key").setup()
@@ -77,7 +91,22 @@ require('lazy').setup({
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("nvim-tree").setup {}
+      require("nvim-tree").setup {
+        update_focused_file = {
+          enable = true,
+          update_cwd = false,
+          ignore_list = {},
+        },
+        system_open = {
+          cmd = nil,
+          args = {},
+        },
+        git = {
+          enable = true,
+          ignore = false,
+          timeout = 500,
+        },
+      }
     end,
   },
   -- Database
@@ -168,42 +197,54 @@ require('lazy').setup({
       require("notify").setup({
         background_colour = "#000000",
         enabled = false,
+        timeout = 2000,
       })
     end
   },   
 
-  {
-    "folke/noice.nvim",
-    config = function()
-      require("noice").setup({
-        -- add any options here
-        routes = {
-          {
-            filter = {
-              event = 'msg_show',
-              any = {
-                { find = '%d+L, %d+B' },
-                { find = '; after #%d+' },
-                { find = '; before #%d+' },
-                { find = '%d fewer lines' },
-                { find = '%d more lines' },
-              },
-            },
-            opts = { skip = true },
-          }
-        },
-      })
-    end,
-    dependencies = {
-      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-      "MunifTanjim/nui.nvim",
-      -- OPTIONAL:
-      --   `nvim-notify` is only needed, if you want to use the notification view.
-      --   If not available, we use `mini` as the fallback
-      "rcarriga/nvim-notify",
-    }
-  },
+--   {
+--   "folke/noice.nvim",
+--   config = function()
+--     require("noice").setup({
+--       routes = {
+--         {
+--           -- This route will filter out specific known messages
+--           filter = {
+--             event = 'msg_show',
+--             any = {
+--               { find = '%d+L, %d+B' },
+--               { find = '; after #%d+' },
+--               { find = '; before #%d+' },
+--               { find = '%d fewer lines' },
+--               { find = '%d more lines' },
+--               { find = 'ALE: .*' },
+--               { find = 'syntax error' },
+--               { find = 'linting' },
+--               { find = 'Workspace loading: 0 / 0' },
+--             },
+--           },
+--           opts = { skip = true },
+--         },
+--         {
+--           -- This route will filter out all messages when moving the cursor
+--           filter = {
+--             event = 'msg_show',
+--             kind = '',
+--             min_count = 1,
+--             find = '',
+--           },
+--           opts = { skip = true },
+--         },
+--       },
+--     })
+--   end,
+--   dependencies = {
+--     "MunifTanjim/nui.nvim",
+--     "rcarriga/nvim-notify",
+--   }
+-- },
 
+  
   'ray-x/go.nvim',
   'ray-x/guihua.lua',
   { "catppuccin/nvim", as = "catppuccin" },

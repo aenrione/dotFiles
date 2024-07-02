@@ -2,5 +2,4 @@ eval "$(jenv init -)"
 eval "$(rbenv init - )"
 eval "$(pyenv init - )"
 eval "$(pyenv init --path)"
-eval $(thefuck --alias)
 

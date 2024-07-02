@@ -1,0 +1,52 @@
+---
+- name: Install Neovim from source
+  hosts: localhost
+  become: yes
+  vars_prompt:
+    - name: "nvim_version"
+      prompt: "Enter the Neovim version to install"
+      private: no
+      default: "0.10"
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - git
+        - ninja-build
+        - gettext
+        - libtool
+        - libtool-bin
+        - autoconf
+        - automake
+        - cmake
+        - g++
+        - pkg-config
+        - unzip
+        - curl
+
+    - name: Clone Neovim repository
+      git:
+        repo: "https://github.com/neovim/neovim.git"
+        dest: "/tmp/neovim"
+        version: "release-{{ nvim_version }}"
+        force: yes
+
+    - name: Build Neovim
+      shell: |
+        make CMAKE_BUILD_TYPE=Release
+      args:
+        chdir: /tmp/neovim
+
+    - name: Install Neovim
+      shell: |
+        make install
+      args:
+        chdir: /tmp/neovim
+    - name: Stow dotfiles
+      shell: stow -t /home/aenrione neovim
+      args:
+        chdir: /home/aenrione/my-github/mine/dotFiles
+

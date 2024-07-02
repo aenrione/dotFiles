@@ -1,6 +1,9 @@
----
 - name: Configure Zsh environment
   hosts: localhost
+  become: yes
+  become_method: sudo
+  vars:
+    user_home: "/home/aenrione"
   tasks:
     - name: Ensure curl is installed
       apt:
@@ -8,32 +11,52 @@
         state: present
       become: yes
       when: ansible_os_family == "Debian"
+
+    - name: Ensure zsh is installed
+      apt:
+        name: zsh
+        state: present
+      become: yes
+      when: ansible_os_family == "Debian"
+
+    - name: CHSH ZSH
+      shell: chsh -s /usr/bin/zsh aenrione
+
     - name: Clone zsh-nvm plugin
       git:
         repo: https://github.com/lukechilds/zsh-nvm.git
-        dest: ~/.zsh-nvm
+        dest: "{{ user_home }}/.zsh-nvm"
+      become: no
 
     - name: Clone fzf
       git:
         repo: https://github.com/junegunn/fzf.git
-        dest: ~/.fzf
+        dest: "{{ user_home }}/.fzf"
+      become: no
       register: fzf_install
 
     - name: Run fzf install script
-      shell: ~/.fzf/install --all
+      shell: "{{ user_home }}/.fzf/install --all"
+      become: no
       # when: fzf_install.changed
+
     - name: Clone fzf-git
       git:
         repo: https://github.com/junegunn/fzf-git.sh
-        dest: ~/.fzf-git.sh/
+        dest: "{{ user_home }}/.fzf-git.sh/"
+      become: no
+
     - name: Clone zsh-autosuggestions
       git:
-        repo: git@github.com:zsh-users/zsh-autosuggestions.git
-        dest: ~/.zsh/zsh-autosuggestions
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: "{{ user_home }}/.zsh/zsh-autosuggestions"
+      become: no
+
     - name: Clone jenv
       git:
         repo: https://github.com/jenv/jenv.git
-        dest: ~/.jenv
+        dest: "{{ user_home }}/.jenv"
+      become: no
 
     - name: Ensure stow is installed
       apt:
@@ -42,9 +65,17 @@
       become: yes
       when: ansible_os_family == "Debian"
 
+    - name: Remove zsh files
+      shell: rm -rf {{ user_home }}/.zshrc {{ user_home }}/.config/shell
+      become: no
+
     - name: Stow dotfiles
-      shell: stow -t ~ zsh
+      shell: stow -t {{ user_home }} zsh
       args:
-        chdir: ~/my-github/mine/dotFiles
+        chdir: "{{ user_home }}/my-github/mine/dotFiles"
+      become: no
+
     - name: Install copilot CLI
       shell: gh extension install github/gh-copilot --force
+      become: no
+

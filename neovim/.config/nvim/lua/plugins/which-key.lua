@@ -97,7 +97,7 @@ M.config = function()
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>confirm q<CR>", "Quit" },
       ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
-      ["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
+      ["c"] = { "<cmd>bd<CR>", "Close Buffer" },
       ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
       ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
       b = {
@@ -107,6 +107,7 @@ M.config = function()
         b = { "<cmd>BufferLineCyclePrev<cr>", "Previous" },
         n = { "<cmd>BufferLineCycleNext<cr>", "Next" },
         W = { "<cmd>noautocmd w<cr>", "Save without formatting (noautocmd)" },
+        c = { "<cmd>Bclose<CR>", "Close Buffer in split" },
         e = {
           "<cmd>BufferLinePickClose<cr>",
           "Pick which buffer to close",
@@ -156,6 +157,7 @@ M.config = function()
       g = {
         name = "Git",
         g = { "<cmd>lua require 'config.terminal'.lazygit_toggle()<cr>", "Lazygit" },
+        n = { "<cmd>Neogit<cr>", "Neogit" },
         j = { "<cmd>lua require 'gitsigns'.nav_hunk('next', {navigation_message = false})<cr>", "Next Hunk" },
         k = { "<cmd>lua require 'gitsigns'.nav_hunk('prev', {navigation_message = false})<cr>", "Prev Hunk" },
         l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
@@ -186,31 +188,7 @@ M.config = function()
         d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>", "Buffer Diagnostics" },
         w = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
         i = { "<cmd>LspInfo<cr>", "Info" },
-        I = { "<cmd>Mason<cr>", "Mason Info" },
-        j = {
-          "<cmd>lua vim.diagnostic.goto_next()<cr>",
-          "Next Diagnostic",
-        },
-        k = {
-          "<cmd>lua vim.diagnostic.goto_prev()<cr>",
-          "Prev Diagnostic",
-        },
-        l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
-        q = { "<cmd>lua vim.diagnostic.setloclist()<cr>", "Quickfix" },
-        r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-        s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-        S = {
-          "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-          "Workspace Symbols",
-        },
-        e = { "<cmd>Telescope quickfix<cr>", "Telescope Quickfix" },
-      },
-      l = {
-        name = "LSP",
-        a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
-        d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>", "Buffer Diagnostics" },
-        w = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
-        i = { "<cmd>LspInfo<cr>", "Info" },
+        f = { "<cmd>ALEFix<cr>", "Fix" },
         I = { "<cmd>Mason<cr>", "Mason Info" },
         j = {
           "<cmd>lua vim.diagnostic.goto_next()<cr>",

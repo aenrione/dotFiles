@@ -3,25 +3,68 @@
   hosts: localhost
   vars:
     github_username: "aenrione"
-    ssh_key_path: "~/.ssh/id_rsa.pub"
-    target_directory: "~/my-github/mine"
-  vars_prompt:
-    - name: email
-      prompt: What is your email?
-      private: false
+    ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    ssh_pub_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
+    target_directory: "{{ lookup('env', 'HOME') }}/my-github/mine"
+    email: "aenrione@protonmail.com"
   tasks:
     - name: Ensure target directory exists
       file:
         path: "{{ target_directory }}"
         state: directory
 
+    - name: Install GitHub CLI (gh)
+      shell: |
+        (type -p wget >/dev/null ||
+        (sudo apt update && sudo apt-get install wget -y)) &&
+        sudo mkdir -p -m 755 /etc/apt/keyrings &&
+        wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+        sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null &&
+        sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg &&
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" |
+        sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null &&
+        sudo apt update &&
+        sudo apt install gh -y
+      args:
+        executable: /bin/bash
+
     - name: Prompt user to authenticate with GitHub CLI
       pause:
         prompt: "Please run 'gh auth login' in another terminal window and authenticate with GitHub. Press Enter to continue once authentication is complete."
 
+    - name: Check if SSH private key exists
+      stat:
+        path: "{{ ssh_key_path }}"
+      register: ssh_key
+
+    - name: Fail if SSH key does not exist
+      fail:
+        msg: "SSH key does not exist at {{ ssh_key_path }}. Please create it or specify the correct path."
+      when: not ssh_key.stat.exists
+
+    - name: Ensure the SSH agent is running
+      shell: eval $(ssh-agent -s)
+      args:
+        executable: /bin/bash
+      environment:
+        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
+
+    - name: Add SSH key to the agent
+      shell: ssh-add "{{ ssh_key_path }}"
+      args:
+        executable: /bin/bash
+      environment:
+        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
+
+    - name: Add GitHub to known hosts
+      known_hosts:
+        name: github.com
+        key: "{{ lookup('pipe', 'ssh-keyscan github.com') }}"
+
     - name: Add SSH key to GitHub if not already added
-      command: >
-        bash -c 'gh ssh-key list | grep -q "$(cat {{ ssh_key_path }})" || gh ssh-key add {{ ssh_key_path }} --title "My NixOS Laptop"'
+      shell: bash -c 'gh ssh-key list | grep -q "$(cat {{ ssh_pub_key_path }})" || gh ssh-key add {{ ssh_pub_key_path }} --title "My NixOS Laptop"'
+      args:
+        executable: /bin/bash
 
     - name: Fetch GitHub repositories
       uri:
@@ -40,8 +83,18 @@
         clone: yes
         update: no
       loop: "{{ repositories }}"
+      environment:
+        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+
     - name: Change permissions
-      shell: sudo chown -R "{{github_username}}:" "{{ target_directory }}"
-    - name: Set github variables
-      shell:  git config --global user.email "{{email}}" && git config --global user.name "{{github_username}}"
+      shell: sudo chown -R "{{ github_username }}:" "{{ target_directory }}"
+      args:
+        executable: /bin/bash
+
+    - name: Set GitHub variables
+      shell: |
+        git config --global user.email "{{ email }}" &&
+        git config --global user.name "{{ github_username }}"
+      args:
+        executable: /bin/bash
 

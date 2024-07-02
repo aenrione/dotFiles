@@ -1,0 +1,124 @@
+---
+- name: Setup development environment
+  hosts: localhost
+  become: yes
+  vars:
+    packages:
+      - curl
+      - cmake
+      - redis
+      - postgresql
+      - libpq-dev
+      - ruby
+      - ruby-dev
+      - libyaml-dev
+      - unzip
+      - stow
+      - arandr
+      - gnome
+      - feh
+      - xclip
+      - network-manager
+      - golang
+      - flatpak
+      - acpi
+      - rustup
+      - rbenv
+      - python3-setuptools
+      - python3-tk
+      - pipx
+      - tmux
+      - tmuxinator
+      - fuse3
+      - nautilus
+      - ripgrep
+      - maim
+      - playerctl
+      - pavucontrol
+      - dunst
+      - slock
+      - scrcpy
+      - pulseaudio-utils
+      - earlyoom
+      - zathura
+      - ranger
+      - gparted
+      - screen
+      - brightnessctl
+      - neofetch
+      - thunderbird
+      - powertop
+      - policykit-1-gnome
+      - rclone
+      - rsync
+      - remmina
+      - fd-find
+      - qbittorrent
+  tasks:
+    - name: Update cache
+      apt:
+        update_cache: yes
+
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: present
+
+    - name: Install pyenv
+      shell: curl https://pyenv.run | bash
+      args:
+        executable: /bin/bash
+        creates: ~/.pyenv
+    - name: Ensure required dependencies are installed
+      apt:
+        name: 
+          - curl
+          - tar
+        state: present
+        update_cache: yes
+
+    - name: Get the latest LazyGit version
+      uri:
+        url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+        return_content: yes
+      register: lazygit_latest_release
+
+    - name: Set LazyGit version fact
+      set_fact:
+        lazygit_version: "{{ lazygit_latest_release.json.tag_name | regex_replace('^v', '') }}"
+
+    - name: Download LazyGit tar.gz
+      get_url:
+        url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+        dest: /tmp/lazygit.tar.gz
+
+    - name: Extract LazyGit tar.gz
+      unarchive:
+        src: /tmp/lazygit.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Install LazyGit
+      command: sudo install /tmp/lazygit /usr/local/bin
+
+    - name: Clean up temporary files
+      file:
+        path: /tmp/lazygit*
+        state: absent
+    - name: Check if flathub remote exists
+      ansible.builtin.shell:
+        cmd: flatpak remote-list | grep -q 'flathub'
+      register: remote_check
+      changed_when: false
+
+    - name: Add flathub remote
+      ansible.builtin.shell:
+        cmd: flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      when: remote_check.rc != 0
+    - name: Download and install Node.js 18.x
+      shell: curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs
+      args:
+        executable: /bin/bash
+    - name: add brightnesctl +s
+      shell: sudo chmod +s /usr/bin/irightnessctl
+

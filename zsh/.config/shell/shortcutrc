@@ -7,6 +7,23 @@ bindkey '^[[P' delete-char
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
+run-tmux() {
+  exec </dev/tty
+  exec <&1
+  tmux
+}
+
+attach-tmux() {
+  exec </dev/tty
+  exec <&1
+  # attach or create a new session
+  tmux attach || tmux
+}
+zle -N run-tmux
+zle -N attach-tmux
+bindkey '^g' run-tmux
+bindkey '^a' attach-tmux
+
 # Enter vim visual to copy the previous commands like in tmux with ctrl-n:
 autoload -Uz copy-earlier-word
 zle -N copy-earlier-word

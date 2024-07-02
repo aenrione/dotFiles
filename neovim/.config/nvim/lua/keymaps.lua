@@ -14,13 +14,20 @@ vim.api.nvim_set_keymap("n", "E", "$", {noremap=false})
 vim.api.nvim_set_keymap("n", "B", "^", {noremap=false})
 vim.api.nvim_set_keymap("n", "TT", ":TransparentToggle<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "ss", ":noh<CR>", {noremap=true})
---
+
 -- splits
---
+
 vim.api.nvim_set_keymap("n", "<C-W>,", ":vertical resize -10<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "<C-W>.", ":vertical resize +10<CR>", {noremap=true})
 vim.keymap.set('n', '<space><space>', "<cmd>set nohlsearch<CR>")
--- Quicker close split
+-- Move withing windows alt + hjkl 
+vim.api.nvim_set_keymap("n", "<M-h>", "<C-w>h", {noremap=true})
+vim.api.nvim_set_keymap("n", "<M-j>", "<C-w>j", {noremap=true})
+vim.api.nvim_set_keymap("n", "<M-k>", "<C-w>k", {noremap=true})
+vim.api.nvim_set_keymap("n", "<M-l>", "<C-w>l", {noremap=true})
+
+
+  -- Quicker close split
 vim.keymap.set("n", "<leader>qq", ":q<CR>",
   {silent = true, noremap = true}
 )

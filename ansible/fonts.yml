@@ -24,17 +24,10 @@
     - name: Download Fira Code Nerd Font
       get_url:
         url: "{{ download_url }}"
-        dest: "/tmp/FiraCode.zip"
+        dest: "~/Downloads/FiraCode.zip"
 
     - name: Unzip Fira Code Nerd Font
       unarchive:
-        src: "/tmp/FiraCode.zip"
+        src: "~/Downloads/FiraCode.zip"
         dest: "{{ font_dir }}"
         remote_src: yes
-
-    - name: Update font cache
-      command: fc-cache -fv
-      become: yes
-
-
-
