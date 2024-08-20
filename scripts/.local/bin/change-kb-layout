@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 # requirements: dmenu, xorg-setxkbmap
 
 # Specify the desired keyboard layout options
-desired_options=("Spanish - latam" "English - us")
+desired_options=("Spanish - es" "English - us")
 
 kb_choice="$(awk '/! layout/{flag=1; next} /! variant/{flag=1; next} flag {print $2, "- " $1}' /usr/share/X11/xkb/rules/base.lst | grep -E "$(IFS="|"; echo "${desired_options[*]}")" | dmenu -l 15)"
 

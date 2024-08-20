@@ -286,6 +286,7 @@ M.setup = function()
     b = { "<cmd>MarkdownPreview<cr>", "Preview in browser" },
     c = { "<cmd>Glow<cr>", "Preview in terminal" },
   }
+-- config.mappings["M"] = { function() require("harpoon.mark").add_file() end, "Harpoon add" }
   config.mappings["A"] = {
     name = "Arduino",
     a = { "<cmd>ArduinoAttach<cr>", "Automatically attach to your board" },

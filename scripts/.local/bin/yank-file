@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Check if a filename is provided as an argument
+if [ -z "$1" ]; then
+  echo "Usage: $0 filename"
+  exit 1
+fi
+
+# Check if the file exists
+if [ ! -f "$1" ]; then
+  echo "File not found: $1"
+  exit 1
+fi
+
+# Use a subshell to unalias cat temporarily
+(
+  unalias cat 2>/dev/null
+  cat "$1" | xclip -i -selection clipboard
+)

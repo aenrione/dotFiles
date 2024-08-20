@@ -8,3 +8,9 @@ lunarvim/.config/nvim/pack/*
 **__pycache__**
 **secrets**
 tmux/**/plugins/*
+
+glow*
+ansible/
+tmp/
+ueberzugpp/
+rbw/.config/rbw/config.json

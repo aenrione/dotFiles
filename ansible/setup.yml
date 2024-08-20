@@ -54,6 +54,10 @@
       - remmina
       - fd-find
       - qbittorrent
+      - p7zip-full
+      - gphoto2
+      - v4l2loopback-utils
+      - ffmpeg
   tasks:
     - name: Update cache
       apt:
@@ -121,4 +125,6 @@
         executable: /bin/bash
     - name: add brightnesctl +s
       shell: sudo chmod +s /usr/bin/irightnessctl
+    - name: add fdfind as fd
+      shell: sudo ln -s /usr/bin/fdfind /usr/bin/fd
 

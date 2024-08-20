@@ -1,0 +1,7 @@
+#bin/bash
+
+VM_NAME="win10"
+# start the VM
+virsh --connect qemu:///system start "$VM_NAME"
+# connect to the VM
+virt-manager --connect qemu:///system --show-domain-console "$VM_NAME"

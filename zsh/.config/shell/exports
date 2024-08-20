@@ -35,7 +35,10 @@ export PATH="$HOME/android-studio/bin:$PATH"
 export GUROBI_HOME="$HOME/gurobi951/linux64"
 export PATH="${PATH}:${GUROBI_HOME}/bin"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
+
 export BROWSER="brave-browser"
+export FILE_BROWSER="yazi"
+export GUI_FILE_BROWSER="nautilus"
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 export EDITOR='nvim'

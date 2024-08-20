@@ -1,5 +1,6 @@
 alias src="source ~/.zshrc"
 alias g="git"
+alias gs="git status"
 alias v="nvim"
 alias vim="nvim"
 alias tws="tmuxinator start tws"
@@ -12,6 +13,7 @@ alias ls="eza -1 --icons"
 alias stw="stow -t ~ -d ~/my-github/mine/dotFiles"
 alias vrc="nvim ~/.config/shell"
 alias yf="yank-file"
+alias ap="ansible-playbook"
 
 alias ns="nix-shell"
 

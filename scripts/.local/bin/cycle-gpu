@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Get the current mode
+current_mode=$(supergfxctl -g)
+
+# Define the modes in the order to cycle through
+modes=("Integrated" "Hybrid" "Vfio")
+
+# dmenu to choose the mode
+chosen_mode=$(printf "%s\n" "${modes[@]}" | dmenu -i -p "Choose a mode:")
+if [ -z "$chosen_mode" ]; then
+    exit 1
+fi
+
+# Set the chosen mode
+if [ "$chosen_mode" != "$current_mode" ]; then
+    if output=$(supergfxctl -m "$chosen_mode" 2>&1); then
+        notify-send "SuperGfx" "Mode set to $chosen_mode"
+        pkill dwm
+    else
+        notify-send "SuperGfx" "Failed to set mode to $chosen_mode: $output"
+    fi
+else
+    notify-send "SuperGfx" "Mode already set to $chosen_mode"
+fi

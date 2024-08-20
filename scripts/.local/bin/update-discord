@@ -1,0 +1,38 @@
+#!/bin/bash
+# USAGE:
+#  ./update-discord.sh /path/to/ansible-playbook.yml
+
+# Function to send notifications
+function notify {
+    local message=$1
+    notify-send "$message"
+}
+
+# Check if an argument for the Ansible playbook was provided
+if [ $# -eq 1 ]; then
+    playbook=$1
+else
+    playbook="/home/$(whoami)/my-github/mine/dotFiles/ansible/update-discord.yml"
+fi
+
+# Update Discord
+# 1. DMENU asks for root password hidden prompt
+psw=$(echo "" | dmenu -p "Enter root password: " -P)
+
+# Check if password was entered
+if [ -z "$psw" ]; then
+    notify "No password entered. Update aborted."
+    exit 1
+fi
+
+# 2. Run Ansible playbook as root
+echo $psw | sudo -S ansible-playbook -i localhost, -c local $playbook
+
+# Check if the ansible-playbook command was successful
+if [ $? -eq 0 ]; then
+    # 3. Notify user if the update was successful
+    notify "Discord updated successfully."
+else
+    # Notify user if the update failed
+    notify "Discord update failed."
+fi

@@ -1,4 +1,5 @@
 #!/bin/sh
+kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" 
 xmodmap -e "clear lock"
 xmodmap -e "keycode 66 = NoSymbol"
 xmodmap -e "keycode 66 = Mode_switch"
@@ -6,6 +7,8 @@ xmodmap -e "keycode 31 = i I Up Up"
 xmodmap -e "keycode 44 = j J Left Left"
 xmodmap -e "keycode 46 = l L Right Right"
 xmodmap -e "keycode 45 = k K Down Down"
-xmodmap -e "keycode 47 = semicolon colon BackSpace BackSpace"
 xmodmap -e "keycode 24 = q Q Escape Escape"
 
+if [ "$kb" = "us" ]; then
+xmodmap -e "keycode 47 = semicolon colon BackSpace BackSpace"
+fi

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Check if acpi is installed
 if ! command -v acpi &> /dev/null; then

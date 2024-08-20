@@ -1,0 +1,13 @@
+#bin/bash
+#
+# get port argument
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <port>"
+    exit 1
+fi
+port=$1
+(
+lsof -wni tcp:"$port" | grep LISTEN | awk '{print $2}'
+) | while read pid; do
+    kill -9 $pid
+done
