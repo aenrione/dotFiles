@@ -1,6 +1,8 @@
 alias src="source ~/.zshrc"
 alias g="git"
 alias gs="git status"
+alias ga="git add ."
+alias gc="git clone"
 alias v="nvim"
 alias vim="nvim"
 alias tws="tmuxinator start tws"
