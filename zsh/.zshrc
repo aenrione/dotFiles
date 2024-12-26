@@ -9,6 +9,11 @@ setopt interactive_comments
 HISTSIZE=10000000
 SAVEHIST=10000000
 HISTFILE=~/.zsh_history
+#
+# Brew
+if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/exports" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/exports"
@@ -28,3 +33,5 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+if [ -e /home/aenrione/.nix-profile/etc/profile.d/nix.sh ]; then . /home/aenrione/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

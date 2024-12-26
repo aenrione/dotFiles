@@ -1,5 +1,4 @@
 require("chatgpt").setup({
-  api_key_cmd = "rbw get 'API platform.openai.com'",
   yank_register = "+",
   edit_with_instructions = {
     diff = false,

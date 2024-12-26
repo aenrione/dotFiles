@@ -97,7 +97,7 @@ M.config = function()
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>confirm q<CR>", "Quit" },
       ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
-      ["c"] = { "<cmd>bd<CR>", "Close Buffer" },
+      ["c"] = { "<cmd>b#|bd#<CR>", "Close Buffer" },
       ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
       ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
       b = {
@@ -107,7 +107,7 @@ M.config = function()
         b = { "<cmd>BufferLineCyclePrev<cr>", "Previous" },
         n = { "<cmd>BufferLineCycleNext<cr>", "Next" },
         W = { "<cmd>noautocmd w<cr>", "Save without formatting (noautocmd)" },
-        c = { "<cmd>Bclose<CR>", "Close Buffer in split" },
+        c = { "<cmd>b#|bd#<CR>", "Close Buffer in split" },
         e = {
           "<cmd>BufferLinePickClose<cr>",
           "Pick which buffer to close",
