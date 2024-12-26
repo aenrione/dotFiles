@@ -1,0 +1,42 @@
+---
+- name: Setup Rust Lang
+  hosts: localhost
+  become: yes
+  vars:
+    home: "{{ lookup('env', 'HOME') }}"
+    cargo_packages:
+      - ripgrep
+      - zoxide
+      - bat
+      - exa
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: 
+          - curl
+          - tar
+        state: present
+        update_cache: yes
+
+    - name: Download and run .sh file
+      shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        executable: /bin/bash
+        creates: "{{home}}/.cargo"
+      
+    - name: Set Cargo path environment variable
+      set_fact:
+        cargo_path: "{{ ansible_env.HOME }}/.cargo/bin"
+
+    - name: Ensure Cargo path is available
+      shell: "{{ item }}"
+      with_items:
+        - 'export PATH=$PATH:{{ cargo_path }}'
+        - 'echo $PATH'
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ cargo_path }}"
+
+    - name: Install desired cargo packages
+      shell: "cargo install ripgrep zoxide bat exa"
+      environment:
+        PATH: "{{ ansible_env.PATH }}:{{ cargo_path }}"

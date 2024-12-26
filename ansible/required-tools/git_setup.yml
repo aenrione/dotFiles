@@ -2,11 +2,10 @@
 - name: Setup development environment
   hosts: localhost
   vars:
-    github_username: "aenrione"
+    default_username: "{{ lookup('env', 'USER') }}"
     ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
     ssh_pub_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
     target_directory: "{{ lookup('env', 'HOME') }}/my-github/mine"
-    email: "aenrione@protonmail.com"
   tasks:
     - name: Ensure target directory exists
       file:
@@ -27,10 +26,35 @@
         sudo apt install gh -y
       args:
         executable: /bin/bash
+    
+    - name: Check Loggged in user
+      shell: gh auth status
+      register: gh_auth_status
+      ignore_errors: yes
+    
+    - name: Get github_username from user
+      pause:
+        prompt: "Enter your GitHub username ({{ default_username }})"
+      register: github_username
+    
+    - name: Check username or set default
+      set_fact:
+        github_username: "{{ github_username.user_input | default(default_username) }}"
+
+    - name: Get email from user
+      pause:
+        prompt: "Enter your email"
+      register: email
+      when: "'Logged in' not in gh_auth_status.stdout"
+
+    - name: Generate SSH key if it does not exist
+      shell: ssh-keygen -t rsa -b 4096 -C "{{ email.user_input }}" -f "{{ ssh_key_path }}"
+      when: "'Logged in' not in gh_auth_status.stdout"
 
     - name: Prompt user to authenticate with GitHub CLI
       pause:
         prompt: "Please run 'gh auth login' in another terminal window and authenticate with GitHub. Press Enter to continue once authentication is complete."
+      when: "'Logged in' not in gh_auth_status.stdout"
 
     - name: Check if SSH private key exists
       stat:
@@ -42,19 +66,10 @@
         msg: "SSH key does not exist at {{ ssh_key_path }}. Please create it or specify the correct path."
       when: not ssh_key.stat.exists
 
-    - name: Ensure the SSH agent is running
-      shell: eval $(ssh-agent -s)
-      args:
-        executable: /bin/bash
-      environment:
-        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
-
-    - name: Add SSH key to the agent
-      shell: ssh-add "{{ ssh_key_path }}"
-      args:
-        executable: /bin/bash
-      environment:
-        SSH_AUTH_SOCK: "{{ lookup('env', 'SSH_AUTH_SOCK') }}"
+    - name: Ensure the GH is authenticated
+      shell: gh auth status
+      register: gh_auth_status
+      failed_when: "'Logged in' not in gh_auth_status.stdout"
 
     - name: Add GitHub to known hosts
       known_hosts:
@@ -62,32 +77,34 @@
         key: "{{ lookup('pipe', 'ssh-keyscan github.com') }}"
 
     - name: Add SSH key to GitHub if not already added
-      shell: bash -c 'gh ssh-key list | grep -q "$(cat {{ ssh_pub_key_path }})" || gh ssh-key add {{ ssh_pub_key_path }} --title "My NixOS Laptop"'
+      shell: bash -c 'gh ssh-key list | grep -q "$(cat {{ ssh_pub_key_path }})" || gh ssh-key add {{ ssh_pub_key_path }} --title "Ansible {{ github_username }}"'
+      when: "'Logged in' not in gh_auth_status.stdout"
       args:
         executable: /bin/bash
 
-    - name: Fetch GitHub repositories
-      uri:
-        url: "https://api.github.com/users/{{ github_username }}/repos"
-        method: GET
-      register: github_repos
+    #- name: Fetch GitHub repositories
+    #  uri:
+    #    url: "https://api.github.com/users/{{ github_username }}/repos"
+    #    method: GET
+    #  register: github_repos
+    #  when: "github_username != ''"
 
-    - name: Set fact for repositories list
-      set_fact:
-        repositories: "{{ github_repos.json | map(attribute='ssh_url') | list }}"
+    #- name: Set fact for repositories list
+    #  set_fact:
+    #    repositories: "{{ github_repos.json | map(attribute='ssh_url') | list }}"
 
-    - name: Clone repositories
-      git:
-        repo: "{{ item }}"
-        dest: "{{ target_directory }}/{{ item | basename | replace('.git', '') }}"
-        clone: yes
-        update: no
-      loop: "{{ repositories }}"
-      environment:
-        GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
+    #- name: Clone repositories
+    #  git:
+    #    repo: "{{ item }}"
+    #    dest: "{{ target_directory }}/{{ item | basename | replace('.git', '') }}"
+    #    clone: yes
+    #    update: no
+    #  loop: "{{ repositories }}"
+    #  environment:
+    #    GIT_SSH_COMMAND: "ssh -o StrictHostKeyChecking=no"
 
     - name: Change permissions
-      shell: sudo chown -R "{{ github_username }}:" "{{ target_directory }}"
+      shell: sudo chown -R "{{ default_username }}:" "{{ target_directory }}"
       args:
         executable: /bin/bash
 
@@ -97,4 +114,8 @@
         git config --global user.name "{{ github_username }}"
       args:
         executable: /bin/bash
+
+    - name: Install copilot CLI
+      shell: gh extension install github/gh-copilot --force
+      become: no
 

@@ -1,0 +1,23 @@
+---
+- name: Configure TMUX enviroment
+  hosts: localhost
+  vars:
+    dotfiles_directory: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    packages:
+      - tmux
+      - stow
+      - tmuxinator
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ packages }}"
+        state: present
+    - name: Clone tpm
+      git:
+        repo: https://github.com/tmux-plugins/tpm.git
+        dest: ~/.tmux/plugins/tpm
+    - name: Stow dotfiles
+      shell: stow -t ~ tmux
+      args:
+        chdir: "{{ dotfiles_directory }}"
+

@@ -9,3 +9,7 @@ source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.
 [ -d "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins/zsh-autosuggestions" ] &&
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
+# Golang
+if [ -d "/usr/local/go" ]; then
+  export PATH=$PATH:/usr/local/go/bin
+fi

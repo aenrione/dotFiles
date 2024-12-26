@@ -19,10 +19,7 @@ HISTFILE=~/.zsh_history
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/zshnameddirrc"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/cli-tools" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/cli-tools"
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shell/secrets" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/secrets"
-source ~/.zsh-nvm/zsh-nvm.plugin.zsh
-source ~/.fzf-git.sh/fzf-git.sh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # pnpm
 export PNPM_HOME="/home/aenrione/.local/share/pnpm"

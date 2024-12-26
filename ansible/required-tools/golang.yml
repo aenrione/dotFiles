@@ -1,0 +1,39 @@
+---
+- name: Setup Golang
+  hosts: localhost
+  become: yes
+  vars:
+    version: 1.23.4
+    architecure: amd64
+    os: linux
+    download_url: "https://golang.org/dl/go{{ version }}.{{ os }}-{{ architecure }}.tar.gz"
+
+  tasks:
+    - name: Check if Golang is already installed
+      stat: path=/usr/local/go
+      register: go_installed
+
+    - name: Install dependencies
+      apt:
+        name: 
+          - curl
+          - tar
+        state: present
+        update_cache: yes
+      when: not go_installed.stat.exists
+    - name: Download Golang
+      get_url:
+        url: "{{ download_url }}"
+        dest: /tmp/go{{ version }}.{{ os }}-{{ architecure }}.tar.gz
+      when: not go_installed.stat.exists
+
+    - name: Extract Golang
+      unarchive:
+        src: /tmp/go{{ version }}.{{ os }}-{{ architecure }}.tar.gz
+        dest: /usr/local
+        remote_src: yes
+      when: not go_installed.stat.exists
+
+    - name: Add Golang to PATH bashrc
+      shell: echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+      when: not go_installed.stat.exists

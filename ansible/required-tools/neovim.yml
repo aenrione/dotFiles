@@ -2,11 +2,8 @@
 - name: Install Neovim from source
   hosts: localhost
   become: yes
-  vars_prompt:
-    - name: "nvim_version"
-      prompt: "Enter the Neovim version to install"
-      private: no
-      default: "0.10"
+  vars:
+    - user_home: "{{ lookup('env', 'HOME') }}"
   tasks:
     - name: Install required packages
       apt:
@@ -26,27 +23,49 @@
         - pkg-config
         - unzip
         - curl
+    - name: Check if Neovim is already installed
+      stat: path=/usr/local/bin/nvim
+      register: nvim_installed
+    
+    - name: Prompt for Version
+      pause:
+        prompt: "Enter the Neovim version to install"
+        default: "0.10"
+      register: nvim_version
+      when: nvim_installed.stat.exists == False
 
     - name: Clone Neovim repository
       git:
         repo: "https://github.com/neovim/neovim.git"
         dest: "/tmp/neovim"
         version: "release-{{ nvim_version }}"
-        force: yes
+      when: nvim_installed.stat.exists == False
 
     - name: Build Neovim
       shell: |
         make CMAKE_BUILD_TYPE=Release
       args:
         chdir: /tmp/neovim
+      when: nvim_installed.stat.exists == False
 
     - name: Install Neovim
       shell: |
         make install
       args:
         chdir: /tmp/neovim
+      when: nvim_installed.stat.exists == False
+
+    - name: clone dotfiles
+      git:
+        repo: https://github.com/aenrione/dotFiles
+        dest: "{{ user_home }}/.dotfiles"
+        update: yes
+      ignore_errors: yes
+      when: user_home is defined
+
     - name: Stow dotfiles
-      shell: stow -t /home/aenrione neovim
+      shell: stow -t {{ user_home }} neovim
       args:
-        chdir: /home/aenrione/my-github/mine/dotFiles
+        chdir: "{{ user_home }}/.dotfiles"
+      when: user_home is defined
 

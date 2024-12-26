@@ -10,7 +10,6 @@ lunarvim/.config/nvim/pack/*
 tmux/**/plugins/*
 
 glow*
-ansible/
 tmp/
 ueberzugpp/
 rbw/.config/rbw/config.json

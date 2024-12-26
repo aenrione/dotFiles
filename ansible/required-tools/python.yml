@@ -1,0 +1,21 @@
+---
+- name: Install Pyenv
+  hosts: localhost
+  become: yes
+  vars:
+    packages:
+      - python3
+      - python3-venv
+      - python3-pip
+      - python3-setuptools
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ packages }}"
+        state: present
+
+    - name: Install pyenv
+      shell: curl https://pyenv.run | bash
+      args:
+        executable: /bin/bash
+        creates: ~/.pyenv

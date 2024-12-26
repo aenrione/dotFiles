@@ -1,0 +1,22 @@
+---
+- name: Install Pyenv
+  hosts: localhost
+  become: yes
+  vars:
+    packages:
+      - libpq-dev
+      - ruby
+      - ruby-dev
+      - libyaml-dev
+      - rbenv
+      - cmake
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ packages }}"
+        state: present
+
+    - name: Clone Ruby Build
+      git:
+        repo: https://github.com/rbenv/ruby-build.git
+        dest: ~/.rbenv/plugins/ruby-build
