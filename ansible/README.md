@@ -12,14 +12,15 @@ This repository contains a collection of Ansible playbooks to set up and configu
 
 - **git**: Ensure you have Git installed to clone this repository.
 - **ansible**: Ensure you have Ansible installed to run the playbooks.
+- **sudo**: Ensure you have sudo privileges to run the playbooks.
+- ubuntu: Ensure you are running the playbooks on an Ubuntu-based system. The playbooks may work on other distributions, but they have only been tested on Ubuntu.
 
 ## Installation
 
 1. Clone the repository:
 
-```sh
-    git clone https://github.com/yourusername/ansible-playbook-collection.git
-    cd ansible-playbook-collection
+```bash
+    git clone https://github.com/aenrione/dotFiles.git
 ```
 
 2. Install Ansible:
@@ -33,15 +34,12 @@ This repository contains a collection of Ansible playbooks to set up and configu
 Navigate to the desired directory and run the playbook:
 
 ```sh
-cd required-tools
-ansible-playbook setup.yml --ask-become-pass
+cd dotFiles/ansible
+ansible-playbook main.yml --ask-become-pass
 ```
 
-Replace `setup-desktop.yml` with the appropriate playbook file for your needs.
+Replace `main.yml` with the appropriate playbook file for your needs. Each file in its subdirectories is a playbook that can be run independently.
 
-## Contributing
-
-Feel free to submit issues or pull requests if you have any improvements or suggestions.
 
 ## License
 

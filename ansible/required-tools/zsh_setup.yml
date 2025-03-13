@@ -52,13 +52,3 @@
       args:
         chdir: "{{ user_home }}/.dotfiles"
       become: no
-
-    - name: Change ownership of .config and .dotfiles
-      file:
-        path: "{{ item }}"
-        owner: "{{ user }}"
-        group: "{{ user }}"
-        recurse: yes
-      with_items:
-        - "{{ user_home }}/.config"
-        - "{{ user_home }}/.dotfiles"

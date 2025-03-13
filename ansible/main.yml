@@ -3,16 +3,16 @@
   hosts: localhost
   gather_facts: false
 
-- import_playbook: setup.yml
-- import_playbook: zsh_setup.yml
-- import_playbook: neovim.yml
-- import_playbook: tmux.yml
-#- import_playbook: docker.yml
-- import_playbook: ruby.yml
-- import_playbook: python.yml
-# - import_playbook: nodejs.yml
-- import_playbook: golang.yml
-- import_playbook: rustlang.yml
-- import_playbook: lazygit.yml
-- import_playbook: git_setup.yml
+- import_playbook: required-tools/setup.yml
+- import_playbook: required-tools/zsh_setup.yml
+- import_playbook: required-tools/neovim.yml
+- import_playbook: required-tools/tmux.yml
+#- import_playbook: required-tools/docker.yml
+- import_playbook: required-tools/ruby.yml
+- import_playbook: required-tools/python.yml
+# - import_playbook: required-tools/nodejs.yml
+- import_playbook: required-tools/golang.yml
+- import_playbook: required-tools/rustlang.yml
+- import_playbook: required-tools/lazygit.yml
+- import_playbook: required-tools/git_setup.yml
 
