@@ -1,5 +1,5 @@
 ---
-- name: Main playbook to install required tools
+- name: Install Base Packages
   hosts: localhost
   gather_facts: false
   vars:
@@ -20,19 +20,8 @@
 
   tasks:
     - name: Install required packages
+      become: true
       apt:
         name: "{{ packages }}"
         state: present
         update_cache: yes
-
-- import_playbook: zsh_setup.yml
-- import_playbook: neovim.yml
-- import_playbook: tmux.yml
-#- import_playbook: docker.yml
-- import_playbook: ruby.yml
-- import_playbook: python.yml
-# - import_playbook: nodejs.yml
-- import_playbook: golang.yml
-- import_playbook: rustlang.yml
-- import_playbook: lazygit.yml
-- import_playbook: git_setup.yml

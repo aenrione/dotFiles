@@ -1,7 +1,10 @@
 ---
 - name: Configure TMUX enviroment
   hosts: localhost
+  become: yes
   vars:
+    user_home: "{{ lookup('env', 'HOME') }}"
+    user: "{{ lookup('env', 'USER') }}"
     dotfiles_directory: "{{ lookup('env', 'HOME') }}/.dotfiles"
     packages:
       - tmux
@@ -21,3 +24,12 @@
       args:
         chdir: "{{ dotfiles_directory }}"
 
+    - name: Change ownership of .config and .dotfiles
+      file:
+        path: "{{ item }}"
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        recurse: yes
+      with_items:
+        - "{{ user_home }}/.config"
+        - "{{ user_home }}/.dotfiles"

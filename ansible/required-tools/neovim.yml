@@ -3,37 +3,32 @@
   hosts: localhost
   become: yes
   vars:
-    - user_home: "{{ lookup('env', 'HOME') }}"
+    user_home: "{{ lookup('env', 'HOME') }}"
+    nvim_version: "0.10"
+    base_packages:
+       - git
+       - ninja-build
+       - gettext
+       - libtool
+       - libtool-bin
+       - autoconf
+       - automake
+       - cmake
+       - g++
+       - pkg-config
+       - unzip
+       - curl
+
   tasks:
     - name: Install required packages
       apt:
-        name: "{{ item }}"
+        name: "{{ base_packages }}"
         state: present
         update_cache: yes
-      with_items:
-        - git
-        - ninja-build
-        - gettext
-        - libtool
-        - libtool-bin
-        - autoconf
-        - automake
-        - cmake
-        - g++
-        - pkg-config
-        - unzip
-        - curl
     - name: Check if Neovim is already installed
       stat: path=/usr/local/bin/nvim
       register: nvim_installed
     
-    - name: Prompt for Version
-      pause:
-        prompt: "Enter the Neovim version to install"
-        default: "0.10"
-      register: nvim_version
-      when: nvim_installed.stat.exists == False
-
     - name: Clone Neovim repository
       git:
         repo: "https://github.com/neovim/neovim.git"
