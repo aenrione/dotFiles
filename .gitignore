@@ -13,3 +13,4 @@ glow*
 tmp/
 ueberzugpp/
 rbw/.config/rbw/config.json
+**/bin/*

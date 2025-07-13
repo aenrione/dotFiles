@@ -21,6 +21,18 @@ vim.api.nvim_create_user_command('LocalNvimConfig', function()
   search_config()
 end, {})
 
+-- Command to toggle lines, relative numbers and cursorline
+vim.api.nvim_create_user_command('ToggleLineNumbers', function()
+  vim.wo.number = not vim.wo.number
+  vim.wo.relativenumber = not vim.wo.relativenumber
+  vim.wo.cursorline = not vim.wo.cursorline
+  -- toggle GitSigns
+  require('gitsigns').toggle_signs()
+  -- toggle indent-blankline (IBLToggle)
+  vim.cmd('IBLToggle')
+  
+end, {})
+
 -- Command to reload the entire configuration file and plugins
 vim.api.nvim_create_user_command('ReloadConfig', function()
  -- Unload all user configuration modules

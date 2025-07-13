@@ -24,11 +24,13 @@ require('lazy').setup({
         local g = vim.g
         g.ale_linters = {
             ruby = {'rubocop', 'ruby'},
-            lua = {'lua_language_server'}
+            lua = {'lua_language_server'},
+            javascript = {'eslint', 'prettier'},
         }
         g.ale_fixers = {
             ruby = {'rubocop'},
-            lua = {'lua_format'}
+            lua = {'lua_format'},
+            javascript = {'prettier', 'eslint'},
         }
     end
   },
@@ -331,39 +333,7 @@ require('lazy').setup({
   { 'lukas-reineke/indent-blankline.nvim' },
   { 'mg979/vim-visual-multi' },
   { 'tpope/vim-endwise' },
-  {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup()
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
-  {
-    "github/copilot.vim",
-    config = function()
-      vim.g.copilot_assume_mapped = true
-      vim.g.copilot_no_tab_map = true
-      vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-      vim.api.nvim_set_keymap("i", "<C-g>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-      vim.api.nvim_set_keymap("n", "<C-g>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-    end,
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    event = "InsertEnter",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    config = function()
-      vim.defer_fn(function()
-        require("copilot").setup()
-        require("copilot_cmp").setup()
-      end, 100)
-    end,
-  },
+  require('plugins.avante'),
   {
     "pwntester/octo.nvim",
     event = "BufRead",

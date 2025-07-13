@@ -15,6 +15,10 @@ vim.api.nvim_set_keymap("n", "B", "^", {noremap=false})
 vim.api.nvim_set_keymap("n", "TT", ":TransparentToggle<CR>", {noremap=true})
 vim.api.nvim_set_keymap("n", "ss", ":noh<CR>", {noremap=true})
 
+--search, pressin n or N will jump to the next search result but keep the cursor in the middle of the screen
+vim.api.nvim_set_keymap("n", "n", "nzzzv", {noremap=true})
+vim.api.nvim_set_keymap("n", "N", "Nzzzv", {noremap=true})
+
 -- splits
 
 vim.api.nvim_set_keymap("n", "<C-W>,", ":vertical resize -10<CR>", {noremap=true})

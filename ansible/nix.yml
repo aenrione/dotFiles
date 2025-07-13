@@ -1,0 +1,9 @@
+#sh <(curl -L https://nixos.org/nix/install)
+---
+- name: Install Nix
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install Nix
+      become: yes
+      shell: "sh <(curl -L https://nixos.org/nix/install)"

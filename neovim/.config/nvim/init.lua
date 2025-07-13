@@ -19,7 +19,6 @@ require('plugins.codesnap')
 require('plugins.harpoon')
 require('plugins.which-key')
 require('plugins.transparent')
-require('plugins.gpt')
 
 
 -- vim: ts=8 sts=2 sw=2 et
