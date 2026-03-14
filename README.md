@@ -12,7 +12,7 @@ $ git clone git@github.com:aenrione/dotFiles.git ~/.dotfiles
 $ cd ~/.dotfiles
 $ git submodule init # for things such as plugins
 $ git submodule update
-$ stow lunarvim neovim tmux zsh# plus whatever else you'd like
+$ stow lunarvim neovim tmux zsh opencode # plus whatever else you'd like
 ```
 
 

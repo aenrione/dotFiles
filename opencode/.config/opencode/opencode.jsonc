@@ -1,0 +1,112 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": true,
+
+  "formatter": {
+    "eslint": {
+      "command": ["npx", "eslint", "--fix", "$FILE"],
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".mjs",
+        ".cjs",
+        ".ts",
+        ".tsx",
+        ".mts",
+        ".cts",
+        ".html",
+        ".htm",
+        ".css",
+        ".scss",
+        ".sass",
+        ".less",
+        ".vue",
+        ".svelte",
+        ".json",
+        ".jsonc",
+        ".yaml",
+        ".yml",
+        ".toml",
+        ".xml",
+        ".md",
+        ".mdx",
+        ".graphql",
+        ".gql",
+      ],
+    },
+  },
+
+  "lsp": {
+    "sorbet": {
+      "command": ["bundle", "exec", "srb", "tc", "--lsp", "--disable-watchman"],
+      "extensions": [".rb", ".rbi"],
+    },
+    "ruby-lsp": { "disabled": true },
+  },
+
+  "permission": {
+    "task": {
+      "review": "deny",
+      "finpr": "deny",
+    },
+  },
+
+  "mcp": {
+    "linear": {
+      "type": "local",
+      "command": ["npx", "mcp-remote", "https://mcp.linear.app/mcp"],
+      "enabled": true,
+    },
+    "browser": {
+      "type": "local",
+      "command": ["npx", "@browsermcp/mcp@latest"],
+      "enabled": true,
+    },
+    "notion": {
+      "type": "remote",
+      "url": "https://mcp.notion.com/mcp",
+      "enabled": true,
+    },
+    "memory": {
+      "type": "remote",
+      "url": "http://localhost:8080/mcp",
+      "enabled": true,
+    },
+    "figma": {
+      "type": "remote",
+      "url": "http://127.0.0.1:3845/mcp",
+      "enabled": true,
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}",
+      },
+      "enabled": true,
+    },
+    "fintoc-docs": {
+      "type": "remote",
+      "url": "https://docs.fintoc.com/mcp",
+      "enabled": true,
+    },
+    "fintoc-api": {
+      "type": "local",
+      "command": ["fintoc", "mcp", "serve"],
+      "enabled": true,
+    },
+    "jcodemunch": {
+      "type": "local",
+      "command": ["uvx", "jcodemunch-mcp"],
+      "enabled": true,
+    },
+  },
+  "tools": {
+    "linear": false,
+  },
+
+  "instructions": [
+    "~/tools/memory-system/agent.md",
+    "~/.config/opencode/jcodemunch-fallback.md",
+  ],
+}

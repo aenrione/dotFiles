@@ -1,0 +1,1 @@
+When retrieving files or code from a repository, you may use `jcodemunch-mcp` first as a file access and code navigation tool. If `jcodemunch-mcp` fails, is unavailable, or does not provide the needed content, fall back to the normal filesystem tools such as `Glob`, `Grep`, and `Read`.

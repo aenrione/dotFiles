@@ -1,0 +1,6 @@
+node_modules/
+.claude/
+peon-ping/.state.json
+peon-ping/.paused
+opencode.jsonc.backup
+opencode.jsonc.tui-migration.bak

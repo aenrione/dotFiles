@@ -1,0 +1,1 @@
+/Users/alfredoenrione/tools/memory-system/.opencode/plugins/memory-events.ts
