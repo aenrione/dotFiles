@@ -134,6 +134,7 @@ M.toggle_log_view = function(logfile)
 end
 
 M.lazygit_toggle = function()
+  require("config.lazygit").prepare()
   local Terminal = require("toggleterm.terminal").Terminal
   local lazygit = Terminal:new {
     cmd = "lazygit",

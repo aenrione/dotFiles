@@ -31,6 +31,8 @@ require('lazy').setup({
             ruby = {'rubocop'},
             lua = {'lua_format'},
             javascript = {'prettier', 'eslint'},
+            typescript = {'prettier', 'eslint'},
+            vue = {'prettier', 'eslint'},
         }
     end
   },
@@ -43,15 +45,6 @@ require('lazy').setup({
     cmd = "WhichKey",
     event = "VeryLazy",
     enabled = true,
-  },
-  {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = { "nvim-lua/plenary.nvim" }
-  },
-  { 
-    "mistricky/codesnap.nvim", 
-    build = "make",
   },
     {
     "ahmedkhalf/project.nvim",
@@ -268,25 +261,18 @@ require('lazy').setup({
     }
   },
 
+  { -- Treesitter
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+  },
+
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
   },
-
-  { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    build = function()
-      pcall(require('nvim-treesitter.install').update { with_sync = true })
-    end,
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    }
-  },
-
-  { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap"} },
-  'theHamsta/nvim-dap-virtual-text',
-  'leoluz/nvim-dap-go',
-
   -- Git related plugins
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
@@ -297,7 +283,7 @@ require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope.nvim', branch = 'master', dependencies = { 'nvim-lua/plenary.nvim' } },
   'nvim-telescope/telescope-symbols.nvim',
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
@@ -333,26 +319,8 @@ require('lazy').setup({
   { 'lukas-reineke/indent-blankline.nvim' },
   { 'mg979/vim-visual-multi' },
   { 'tpope/vim-endwise' },
-  require('plugins.avante'),
-  {
-    "pwntester/octo.nvim",
-    event = "BufRead",
-  },
   { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
   { "ellisonleao/glow.nvim",  config = true,                         cmd = "Glow" },
-  {
-    "iamcco/markdown-preview.nvim",
-    build = "cd app && npm install",
-    ft = "markdown",
-    config = function()
-      vim.g.mkdp_auto_start = 1
-    end,
-  },
-  {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = { "nvim-lua/plenary.nvim" }
-  },
   {
     "tpope/vim-rails",
   },
@@ -363,4 +331,19 @@ require('lazy').setup({
       require('distant'):setup()
     end
   },
+  -- {
+  --   dir = "~/tools/memory-system/nvim-plugin",
+  --   name = "memory",
+  --   config = function()
+  --     require('memory').setup({
+  --       server_url = "http://localhost:8080/mcp",
+  --       auto_recall = false,
+  --       auto_consolidate = false,
+  --     })
+  --   end
+  -- },
+  -- Load local plugins
+  require('plugins.opencode-ask'),
+  require('plugins.octo'),
+  require('plugins.99'),
 })

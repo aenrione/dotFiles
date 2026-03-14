@@ -1,4 +1,10 @@
 -- require('telescope').load_extension('harpoon')
+if vim.treesitter and not vim.treesitter.ft_to_lang then
+  local ts_lang = vim.treesitter.language
+  if ts_lang and ts_lang.get_lang then
+    vim.treesitter.ft_to_lang = ts_lang.get_lang
+  end
+end
 require('telescope').load_extension('git_worktree')
 require('telescope').load_extension('projects')
 
@@ -8,19 +14,14 @@ require('telescope').setup {
   defaults = {
     layout_strategy = "horizontal",
     layout_config = {
-      preview_width = 0.65,     
       horizontal = {
+        preview_width = 0.65,
         size = {
           width = "95%",
           height = "95%",
         },
       },
     },
-  pickers = {
-    find_files = {
-      theme = "dropdown",
-    }
-  },
     mappings = {
       i = {
         ['<C-u>'] = false,
@@ -29,6 +30,11 @@ require('telescope').setup {
         ["<C-k>"] = require('telescope.actions').move_selection_previous,
         ["<C-d>"] = require('telescope.actions').move_selection_previous,
       },
+    },
+  },
+  pickers = {
+    find_files = {
+      theme = "dropdown",
     },
   },
 }

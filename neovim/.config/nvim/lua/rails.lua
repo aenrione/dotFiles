@@ -50,7 +50,7 @@ vim.api.nvim_create_user_command('RailsJavascript', function()
 end, {})
 
 local function list_microservices()
-  local path = vim.fn.getcwd() .. "/microservices"
+  local path = vim.fn.getcwd() .. "/engines"
   local dirs = vim.fn.split(vim.fn.globpath(path, '*/'), '\n')
   for i, dir in ipairs(dirs) do
     local last_directory = dir:match(".*/([^/]+)/?$")
@@ -78,7 +78,7 @@ local function search_in_microservice(subdir)
       map('i', '<CR>', function()
         local selection = require('telescope.actions.state').get_selected_entry()
         require('telescope.actions').close(prompt_bufnr)
-        local search_path = vim.fn.getcwd() .. '/microservices/' .. selection.value .. '/' .. subdir
+        local search_path = vim.fn.getcwd() .. '/engines/' .. selection.value .. '/' .. subdir
         require('telescope.builtin').find_files({
           prompt_title = "Search " .. subdir .. " in " .. selection.value,
           cwd = search_path,
@@ -87,7 +87,7 @@ local function search_in_microservice(subdir)
       map('n', '<CR>', function()
         local selection = require('telescope.actions.state').get_selected_entry()
         require('telescope.actions').close(prompt_bufnr)
-        local search_path = vim.fn.getcwd() .. '/microservices/' .. selection.value .. '/' .. subdir
+        local search_path = vim.fn.getcwd() .. '/engines/' .. selection.value .. '/' .. subdir
         require('telescope.builtin').find_files({
           prompt_title = "Search " .. subdir .. " in " .. selection.value,
           cwd = search_path,

@@ -14,14 +14,34 @@ alias stw="stow -t ~ -d ~/my-github/mine/dotFiles"
 alias vrc="nvim ~/.config/shell"
 alias yf="yank-file"
 alias ap="ansible-playbook"
+alias oc="opencode"
+alias gch='git checkout "$(git branch --format="%(refname:short)" | fzf)"'
+alias gb='g branch'
+alias ghs='git diff --shortstat --cached'
+alias gfiles='git diff --name-only main...HEAD'
+alias gcom='get_pr_comments'
+alias gitest='npm run test:vitest -- $(gfiles)'
+
+alias peu='peon packs use --install $(peon packs list --registry | fzf)'
+alias pel='peon packs list --registry | fzf'
+alias pep='peon preview'
+
 
 alias ns="nix-shell"
 
 
-if command -v bat &> /dev/null; then
-    alias cat="bat"
-fi
-
 if command -v eza &> /dev/null; then
     alias ls="eza -1 --icons"
 fi
+
+# fintoc
+alias dr="doppler run -- "
+alias drsx="doppler run --config dev_sandbox -- "
+alias drmx="doppler run --config dev_mx -- "
+alias drcl="doppler run --config dev_cl -- "
+alias multi_migrate="drsx rails db:migrate && drmx rails db:migrate && drcl rails db:migrate"
+alias multi_reset="drsx rails db:drop db:create db:migrate && drmx rails db:drop db:create db:migrate && drcl rails db:drop db:create db:migrate"
+
+alias ssu="ssh ubuntu-homelab"
+alias ssc="ssh cursobot"
+alias ssf="sshfwd ubuntu-homelab"

@@ -6,7 +6,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -50,6 +50,7 @@ local on_attach = function(_, bufnr)
       vim.lsp.buf.formatting()
     end
   end, { desc = 'Format current buffer with LSP' })
+
 end
 
 -- Setup mason so it can manage external tooling
@@ -57,7 +58,7 @@ require('mason').setup()
 
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'ts_ls', 'gopls', 'solargraph'  }
+local servers = { 'clangd', 'rust_analyzer', 'pyright', 'vtsls', 'vue_ls', 'gopls', 'solargraph' }
 
 -- Ensure the servers above are installed
 require('mason-lspconfig').setup {
@@ -68,11 +69,42 @@ require('mason-lspconfig').setup {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+local use_builtin_lsp = vim.fn.has('nvim-0.11') == 1 and vim.lsp and vim.lsp.config
+local function setup_server(name, opts)
+  if use_builtin_lsp then
+    vim.lsp.config(name, opts)
+  else
+    require('lspconfig')[name].setup(opts)
+  end
+end
+
+local server_overrides = {
+  vtsls = {
+    filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue' },
+    settings = {
+      vtsls = {
+        tsserver = {
+          globalPlugins = {
+            {
+              name = '@vue/typescript-plugin',
+              location = vim.fn.stdpath('data') .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+              languages = { 'vue' },
+              configNamespace = 'typescript',
+            },
+          },
+        },
+      },
+    },
+  },
+}
+
 for _, lsp in ipairs(servers) do
-  require('lspconfig')[lsp].setup {
+  local opts = vim.tbl_extend('force', {
     on_attach = on_attach,
     capabilities = capabilities,
-  }
+  }, server_overrides[lsp] or {})
+
+  setup_server(lsp, opts)
 end
 
 -- Turn on lsp status information
@@ -85,7 +117,7 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
-require('lspconfig').luau_lsp.setup {
+setup_server('luau_lsp', {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -107,7 +139,13 @@ require('lspconfig').luau_lsp.setup {
       telemetry = { enable = false },
     },
   },
-}
+})
+
+if use_builtin_lsp then
+  local enabled = vim.tbl_extend('force', {}, servers)
+  table.insert(enabled, 'luau_lsp')
+  vim.lsp.enable(enabled)
+end
 --
 -- nvim-cmp setup
 local cmp = require 'cmp'
@@ -165,4 +203,3 @@ vim.api.nvim_create_autocmd('FileType', {
     })
   end,
 })
-

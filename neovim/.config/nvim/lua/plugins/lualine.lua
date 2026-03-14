@@ -77,7 +77,9 @@ require('lualine').setup {
       'branch'
     },
     lualine_b = {},
-    lualine_c = {},
+    lualine_c = {
+      { 'filename', path = 1, shorting_target = 40 },
+    },
     lualine_x = {
       -- {
       --   -- require("noice").api.statusline.mode.get,
@@ -98,9 +100,9 @@ require('lualine').setup {
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
+    lualine_c = {{ 'filename', path = 1 }},
     lualine_x = {'buffers'},
-    lualine_y = {'filename'},
+    lualine_y = {{ 'filename', path = 1 }},
     lualine_z = { 'encoding', 'fileformat', 'filetype'}
   },
   tabline = {},
@@ -112,7 +114,7 @@ require('lualine').setup {
         alternate_file = '', -- Text to show to identify the alternate file
         directory =  '',     -- Text to show when the buffer is a directory
       },
-      shorten = true,
+      shorten = false,
     }},
   lualine_b = {},
   lualine_c = {},

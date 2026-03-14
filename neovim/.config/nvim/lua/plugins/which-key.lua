@@ -78,6 +78,11 @@ M.config = function()
     },
     vmappings = {
       ["/"] = { "<Plug>(comment_toggle_linewise_visual)", "Comment toggle linewise (visual)" },
+      ["9"] = {
+        name = "99",
+        v = { "<cmd>lua require('99').visual()<cr>", "99 Visual" },
+        s = { "<cmd>lua require('99').stop_all_requests()<cr>", "99 Stop" },
+      },
       l = {
         name = "LSP",
         a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
@@ -97,9 +102,14 @@ M.config = function()
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>confirm q<CR>", "Quit" },
       ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment toggle current line" },
-      ["c"] = { "<cmd>b#|bd#<CR>", "Close Buffer" },
+      ["C"] = { "<cmd>b#|bd#<CR>", "Close Buffer" },
+      ["c{"] = { "<cmd>ConflictChooseOurs<cr>", "Conflict: Choose Ours" },
+      ["c}"] = { "<cmd>ConflictChooseTheirs<cr>", "Conflict: Choose Theirs" },
+      ["cp"] = { "<cmd>ConflictPrev<cr>", "Conflict: Prev" },
+      ["cn"] = { "<cmd>ConflictNext<cr>", "Conflict: Next" },
       ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
       ["e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
+      ["O"] = { "<cmd>Octo<CR>", "Octo git" },
       b = {
         name = "Buffers",
         j = { "<cmd>BufferLinePick<cr>", "Jump" },
@@ -125,23 +135,6 @@ M.config = function()
           "<cmd>BufferLineSortByExtension<cr>",
           "Sort by language",
         },
-      },
-      d = {
-        name = "Debug",
-        t = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
-        b = { "<cmd>lua require'dap'.step_back()<cr>", "Step Back" },
-        c = { "<cmd>lua require'dap'.continue()<cr>", "Continue" },
-        C = { "<cmd>lua require'dap'.run_to_cursor()<cr>", "Run To Cursor" },
-        d = { "<cmd>lua require'dap'.disconnect()<cr>", "Disconnect" },
-        g = { "<cmd>lua require'dap'.session()<cr>", "Get Session" },
-        i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
-        o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
-        u = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
-        p = { "<cmd>lua require'dap'.pause()<cr>", "Pause" },
-        r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "Toggle Repl" },
-        s = { "<cmd>lua require'dap'.continue()<cr>", "Start" },
-        q = { "<cmd>lua require'dap'.close()<cr>", "Quit" },
-        U = { "<cmd>lua require'dapui'.toggle({reset = true})<cr>", "Toggle UI" },
       },
       p = {
         name = "Plugins",
@@ -239,6 +232,8 @@ M.config = function()
         b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
         c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
         f = { "<cmd>Telescope find_files<cr>", "Find File" },
+        g = { "<cmd>lua require('telescope.builtin').git_status({ previewer = false })<cr>", "Git Status (no preview)" },
+        G = { "<cmd>Telescope git_status<cr>", "Git Status" },
         h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
         H = { "<cmd>Telescope highlights<cr>", "Find highlight groups" },
         M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
@@ -268,6 +263,11 @@ end
 M.setup = function()
   local which_key = require "which-key"
 
+  local function get_visual_selection()
+    vim.cmd([[normal! "vy]])
+    return vim.fn.getreg("v")
+  end
+
   local config = M.config()
   which_key.setup(config.setup)
 
@@ -279,8 +279,21 @@ M.setup = function()
   config.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
   config.mappings["B"] = { "<cmd>Telescope buffers<CR>", "Buffers" }
   config.mappings["t"] = { "<cmd>ToggleLineNumbers<CR>", "Toggle Lines" }
+  config.mappings["Q"] = { "<cmd>qa!<CR>", "Quit all (force)" }
   config.mappings["g"]["B"] = { "<cmd>!gh browse<CR><CR>", "Open origin" }
   config.mappings["b"]["C"] = { "<cmd>%bd<CR><CR>", "Close all buffers" }
+  config.vmappings["s"] = {
+    name = "Search",
+    t = {
+      function()
+        local selection = get_visual_selection()
+        if selection ~= "" then
+          require("telescope.builtin").grep_string { search = selection }
+        end
+      end,
+      "Text (selection)",
+    },
+  }
   config.mappings["m"] = {
     name = "Markdown",
     b = { "<cmd>MarkdownPreview<cr>", "Preview in browser" },
@@ -318,15 +331,6 @@ M.setup = function()
     S = { "<cmd>SearchMicroserviceSerializers<CR>", "Microservice Serializers" },
   }
 
-  -- ChatGPT.nvim
-  -- Create vimwhichkeys
-  config.mappings["C"] = {
-    name = "ChatGPT",
-    c = { "<cmd>ChatGPT<CR>", "ChatGPT" },
-    C = { "<cmd>ChatGPT<CR>", "ChatGPT" },
-    a = { "<cmd>ChatGPTActAs<CR>", "Act as" },
-  }
-
   -- folke/todo
   config.mappings["T"] = {
     name = "Todo",
@@ -338,6 +342,36 @@ M.setup = function()
     p = { "<cmd>TodoPrev<CR>", "Prev" },
   }
 
+  -- OpenCode ask (visual)
+  config.vmappings["o"] = {
+    name = "OpenCode",
+    a = { ":OpenCodeAsk<cr>", "Ask (prompt modal)" },
+    f = { ":OpenCodeFill<cr>", "Fill (no prompt)" },
+    c = { ":OpenCodeChat<cr>", "Chat (toggle)" },
+    o = { ":OpenCodeChatOpen<cr>", "Chat (open)" },
+    x = { ":OpenCodeChatClose<cr>", "Chat (close)" },
+  }
+
+  -- Octo.nvim
+  config.mappings["o"] = {
+    name = "OpenCode/Octo",
+    a = { ":OpenCodeAsk<cr>", "Ask (prompt modal)" },
+    f = { ":OpenCodeFill<cr>", "Fill (no prompt)" },
+    c = { ":OpenCodeChat<cr>", "Chat (toggle)" },
+    o = { ":OpenCodeChatOpen<cr>", "Chat (open)" },
+    x = { ":OpenCodeChatClose<cr>", "Chat (close)" },
+    G = { "<cmd>Octo<cr>", "Octo" },
+    i = { "<cmd>Octo issue list<cr>", "List GitHub Issues" },
+    p = { "<cmd>Octo pr list<cr>", "List GitHub PullRequests" },
+    d = { "<cmd>Octo discussion list<cr>", "List GitHub Discussions" },
+    n = { "<cmd>Octo notification list<cr>", "List GitHub Notifications" },
+    s = {
+      function()
+        require("octo.utils").create_base_search_command { include_current_repo = true }
+      end,
+      "Search GitHub",
+    },
+  }
 
   local mappings = config.mappings
   local vmappings = config.vmappings
