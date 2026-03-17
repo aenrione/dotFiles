@@ -371,6 +371,27 @@ M.setup = function()
       end,
       "Search GitHub",
     },
+  -- Linear
+  config.mappings["M"] = {
+    name = "Linear",
+    m = { "<cmd>lua require('linear-nvim').show_assigned_issues()<cr>", "My Issues" },
+    t = { "<cmd>lua require('linear-nvim').show_issues_by_team()<cr>", "Issues by Team" },
+    p = { "<cmd>lua require('linear-nvim').show_issues_by_project()<cr>", "Issues by Project" },
+    l = { "<cmd>lua require('linear-nvim').show_issues_by_label()<cr>", "Issues by Label" },
+    y = { "<cmd>lua require('linear-nvim').show_cycle_issues()<cr>", "Current Cycle" },
+    f = { "<cmd>lua require('linear-nvim').search_issues()<cr>", "Search Issues" },
+    c = { "<cmd>lua require('linear-nvim').create_issue()<cr>", "Create Issue" },
+    s = { "<cmd>lua require('linear-nvim').show_issue_details()<cr>", "Show Issue (cursor)" },
+    R = { "<cmd>lua require('linear-nvim').refresh_cache()<cr>", "Refresh Cache" },
+    -- Custom Views
+    v = { "<cmd>lua require('linear-nvim').show_custom_views()<cr>", "Custom Views" },
+    V = { "<cmd>lua require('linear-nvim').show_pinned_views()<cr>", "Pinned Views" },
+    a = { "<cmd>lua require('linear-nvim').pin_view()<cr>", "Pin a View" },
+    d = { "<cmd>lua require('linear-nvim').remove_pinned_view()<cr>", "Unpin View" },
+  }
+  config.vmappings["M"] = {
+    name = "Linear",
+    c = { "<cmd>lua require('linear-nvim').create_issue()<cr>", "Create Issue" },
   }
 
   local mappings = config.mappings

@@ -1,7 +1,15 @@
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
 
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+# Git branch for prompt
+function git_branch_info() {
+  local branch
+  branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+  echo " %{$fg[yellow]%}($branch)%{$reset_color%}"
+}
+
+setopt PROMPT_SUBST
+PS1='%B%{$fg[red]%}[%{$fg[cyan]%}%n%{$fg[green]%}@%{$fg[magenta]%}%M %{$fg[blue]%}%~%{$fg[red]%}]$(git_branch_info)%{$reset_color%}$%b '
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 setopt interactive_comments
